@@ -63,7 +63,7 @@ payment_analysis = filtered_df.groupby('Payment Method').agg(
 ).round(2)
 payment_analysis = payment_analysis.sort_values('total_revenue', ascending=False)
 with st.container():
-    fig4 = px.bar(payment_analysis, x='Payment Method', y=['total_revenue', 'transactions', 'avg_transaction_value'], title='Payment Method Performance',
+    fig4 = px.bar(payment_analysis.reset_index(), x='Payment Method', y=['total_revenue', 'transactions', 'avg_transaction_value'], title='Payment Method Performance',
                   barmode='group', text_auto=True)
     fig4.update_layout(yaxis_title='Value')
     st.plotly_chart(fig4, width="stretch", height=800)
