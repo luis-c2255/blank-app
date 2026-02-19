@@ -64,14 +64,14 @@ with st.container():
     st.subheader("📊 Satisfaction Distribution")
     fig1 = px.histogram(df_filtered, x='satisfaction_level', nbins=30,
     color='salary', barmode='overlay',
-    title="Satisfaction by Salary Level")
+    title="Satisfaction by Salary Level", color_continuous_scale='Blues')
     st.plotly_chart(fig1, width="stretch", height=800)
 
 with st.container():
     st.subheader("🏢 Department Satisfaction")
     dept_sat = df_filtered.groupby('dept')['satisfaction_level'].mean().sort_values()
     fig2 = px.bar(dept_sat, orientation='h',
-    title="Average Satisfaction by Department")
+    title="Average Satisfaction by Department", color_continuous_scale='viridis')
     fig2.update_layout(showlegend=False, yaxis_title="", xaxis_title="Satisfaction")
     st.plotly_chart(fig2, width="stretch", height=800)
 
@@ -96,6 +96,18 @@ with st.container():
     fig4.update_traces(contours_coloring="fill", contours_showlabels=True)
     st.plotly_chart(fig4, width="stretch", height=800)
 
+with st.container():
+     st.subheader("Satisfaction by Department & Salary")
+     fig5 = px.box(df_filtered, x='dept', y='satisfaction_level', color='salary',
+                   title='Satisfaction by Department & Salary', color_discrete_sequence=px.colors.qualitative.Set2)
+     fig5.update_layout(xaxis_title='Department', yaxis_title='Satisfaction Level')
+     st.plotly_chart(fig5, width='stretch', height=800)
+     
+with st.container():
+    fig6 = px.scatter_3d(df_filtered, x='number_project', y='average_montly_hours', z='satisfaction_level', color='salary',
+                         title='Employee Performance 3D View', labels={'number_project': 'Projects', 'average_montly_hours': 'Monthly Hours',
+                                                                   'satisfaction_level': 'Satisfaction'}, opacity=0.7)
+    st.plotly_chart(fig6, width='stretch', height=800)
 # High-risk employees table
 st.markdown("---")
 st.subheader("⚠️ High-Risk Employees (Low Satisfaction + High Performance)")
