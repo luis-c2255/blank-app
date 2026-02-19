@@ -42,7 +42,7 @@ col4.metric("Avg Order", f"${filtered_df['Total Revenue'].mean():,.2f}")
 with st.container():
     fig1 = px.bar(filtered_df.groupby('Product Category')['Total Revenue'].sum().reset_index(),
     x='Product Category', y='Total Revenue', title="Revenue by Category")
-    st.plotly_chart(fig1, width="stratch", height=800)
+    st.plotly_chart(fig1, width="stretch", height=800)
 
 with st.container():
     fig2 = px.pie(filtered_df.groupby('Region')['Total Revenue'].sum().reset_index(),
