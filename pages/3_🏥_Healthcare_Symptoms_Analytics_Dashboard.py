@@ -139,7 +139,7 @@ with col2:
 if st.button("🔍 Predict Disease"):
     if len(selected_symptoms) > 0:
         # Make prediction using the function we created earlier
-        predicted_disease, confidence, top_3 = predict_disease(
+        predict_disease, confidence, top_3 = predict_disease(
         input_age, input_gender, selected_symptoms
     )
 
