@@ -65,7 +65,7 @@ with st.container():
     fig1 = px.histogram(df_filtered, x='satisfaction_level', nbins=30,
     color='salary', barmode='overlay',
     title="Satisfaction by Salary Level")
-    st.plotly_chart(fig1, width="stretch", height=500)
+    st.plotly_chart(fig1, width="stretch", height=800)
 
 with st.container():
     st.subheader("🏢 Department Satisfaction")
@@ -73,7 +73,7 @@ with st.container():
     fig2 = px.bar(dept_sat, orientation='h',
     title="Average Satisfaction by Department")
     fig2.update_layout(showlegend=False, yaxis_title="", xaxis_title="Satisfaction")
-    st.plotly_chart(fig2, width="stretch", height=500)
+    st.plotly_chart(fig2, width="stretch", height=800)
 
 
 
@@ -86,7 +86,7 @@ with st.container():
     title="Projects vs Hours (sized by evaluation)")
     fig3.add_hline(y=250, line_dash="dash", line_color="red",
     annotation_text="Overwork Threshold")
-    st.plotly_chart(fig3, width="stretch", height=500)
+    st.plotly_chart(fig3, width="stretch", height=800)
 
 with st.container():
     st.subheader("🎯 Performance vs Satisfaction")
@@ -94,7 +94,7 @@ with st.container():
     y='satisfaction_level',
     title="Performance-Satisfaction Density")
     fig4.update_traces(contours_coloring="fill", contours_showlabels=True)
-    st.plotly_chart(fig4, width="stretch", height=500)
+    st.plotly_chart(fig4, width="stretch", height=800)
 
 # High-risk employees table
 st.markdown("---")
