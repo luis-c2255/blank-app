@@ -17,11 +17,19 @@ categories = st.multiselect("Category", df['Product Category'].unique(),
 default=df['Product Category'].unique())
 
 # Filter data
-filtered_df = df[
-(df['Date'].between(*date_range)) &
-(df['Region'].isin(regions)) &
-(df['Product Category'].isin(categories))
-]
+if len(date_range) == 2:
+    start_date, end_date = date_range
+    start_date = pd.to_datetime(start_date)
+    end_date = pd.to_datetime(end_date)
+    filtered_df = df[
+        (df['Date'] >= start_date) &
+        (df['Date'] <= end_date) &
+        (df['Region'].isin(regions)) &
+        (df['Product Category'].isin(categories))
+    ]
+else:
+    filtered_df = df.copy()
+
 
 # KPI Cards
 col1, col2, col3, col4 = st.columns(4)
