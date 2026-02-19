@@ -37,7 +37,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.header(
+st.title(
     st.markdown( "# 📊 Multiple Analysis Dashboard"),
 )
 
