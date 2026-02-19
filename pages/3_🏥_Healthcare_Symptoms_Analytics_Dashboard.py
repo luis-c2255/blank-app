@@ -39,7 +39,7 @@ st.plotly_chart(fig, width="stretch", height=600)
 with st.container():
     st.subheader("Age Distribution")
     fig_age = px.histogram(df, x='Age', nbins=30,
-    title='Patient Age Distribution')
+    title='Patient Age Distribution', color_continuous_scale='teal'
     st.plotly_chart(fig_age, width="stretch", height=600)
 
 with st.container():
