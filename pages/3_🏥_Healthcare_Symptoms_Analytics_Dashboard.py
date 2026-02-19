@@ -84,7 +84,7 @@ for symptoms in disease_df['Symptoms']:
 symptom_counts = pd.Series(all_symptoms_disease).value_counts().head(10)
 fig = px.bar(symptom_counts, orientation='h',
 labels={'value': 'Frequency', 'index': 'Symptom'},
-title=f'Top 10 Symptoms for {selected_disease}')
+title=f'Top 10 Symptoms for {selected_disease}', color_continuous_scale='plasma')
 st.plotly_chart(fig, width="stretch", height=600)
 
 # Page 3: Symptom Analysis
@@ -101,7 +101,7 @@ symptom_counts = pd.Series(all_symptoms).value_counts()
 st.subheader("Most Common Symptoms Across All Patients")
 fig = px.bar(symptom_counts.head(20), orientation='h',
 labels={'value': 'Frequency', 'index': 'Symptom'},
-title='Top 20 Most Common Symptoms')
+title='Top 20 Most Common Symptoms', color_continuous_scale='Inferno')
 st.plotly_chart(fig, width="stretch", height=600)
 
 # Symptom count distribution
@@ -110,14 +110,14 @@ st.subheader("Symptom Count Distribution")
 with st.container():
     fig = px.histogram(df, x='Symptom_Count',
     title='Distribution of Number of Symptoms per Patient',
-    labels={'Symptom_Count': 'Number of Symptoms'})
+    labels={'Symptom_Count': 'Number of Symptoms'}, color_discrete_sequence=px.colors.sequential.BuPu)
     st.plotly_chart(fig, width="stretch", height=600)
 
 with st.container():
     # Relationship between age and symptom count
     fig = px.scatter(df.sample(1000), x='Age', y='Symptom_Count',
     color='Gender', opacity=0.5,
-    title='Age vs Symptom Count (Sample)',
+    title='Age vs Symptom Count (Sample)', color_continuous_scale='PuBuGn'
     trendline='lowess')
     st.plotly_chart(fig, width="stretch", height=600)
 
