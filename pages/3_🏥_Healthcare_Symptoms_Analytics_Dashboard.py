@@ -124,6 +124,37 @@ with st.container():
 st.header("🎯 Disease Prediction Tool")
 st.write("Enter patient information to predict the most likely disease")
 
+def predict_disease(age, gender, symptoms_list):
+    """
+    Funcion adaptada para Streamlit y corregida.
+    """
+    gender_encoded = le_gender.transform([gender.title()])[0]
+
+    new_patient = pd.Dataframe({
+        'Age': [age],
+        'Gender': [gender_encoded],
+        'Symptom_Count': [len(symptoms_list)]
+    })
+
+    for symptom in sympton_dummies.columns:
+        if symptom in [s.strip().lower() for s in symptoms_list]:
+            new_patient[symptom] = 1
+        else:
+            new_patient[symptom] = 0
+
+    for col in X.columns:
+        if col not in new_patient.columns:
+            new_patient[col] = 0
+    new_patient = new_patient[X_columns]
+
+    prediction = rf_model.predict(new_patient)[0]
+    probabilities = rf_model.predict_proba(new_patient)[0]
+
+    top_3_idx = probabilities.argsort()[-3][::-1]
+    top_3_predictions = [(rf_model.classes_[idx], probabilities[idx]) for idx in top_3_idx]
+
+    return prediction, probabilities.max(), top_3_predictions
+
 col1, col2 = st.columns(2)
 
 with col1:
@@ -139,7 +170,7 @@ with col2:
 if st.button("🔍 Predict Disease"):
     if len(selected_symptoms) > 0:
         # Make prediction using the function we created earlier
-        p_disease, confidence, top_3 = predict_disease(
+        res_disease, res_conf, res_top3 = predict_disease(
         input_age, input_gender, selected_symptoms
     )
 
@@ -149,8 +180,8 @@ if st.button("🔍 Predict Disease"):
 
     with col1:
         st.subheader("Primary Diagnosis")
-        st.metric("Predicted Disease", p_disease)
-        st.metric("Confidence", f"{confidence*100:.2f}%")
+        st.metric("Predicted Disease", res_disease)
+        st.metric("Confidence", f"{res_conf*100:.2f}%")
 
     with col2:
         st.subheader("Top 3 Possible Diagnoses")
@@ -164,8 +195,8 @@ if st.button("🔍 Predict Disease"):
         st.plotly_chart(fig, width="stretch", height=600)
 
     # Show relevant statistics for predicted disease
-    st.subheader(f"Statistics for {p_disease}")
-    disease_stats = df[df['Disease'] == p_disease]
+    st.subheader(f"Statistics for {res_disease}")
+    disease_stats = df[df['Disease'] == res_disease]
 
     col1, col2, col3 = st.columns(3)
     col1.metric("Total Cases in Dataset", len(disease_stats))
