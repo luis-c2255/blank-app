@@ -37,9 +37,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title(
-    st.markdown( "# 📊 Multiple Analysis Dashboard"),
-)
+st.title("Multiple Analysis Dashboard")
 
 # ============================================
 # FOOTER
