@@ -59,16 +59,15 @@ default=['low', 'medium', 'high'])
 df_filtered = df[(df['dept'].isin(dept_filter)) & (df['salary'].isin(salary_filter))]
 
 # Visualizations
-col1, col2 = st.columns(2)
 
-with col1:
+with st.container():
     st.subheader("📊 Satisfaction Distribution")
     fig1 = px.histogram(df_filtered, x='satisfaction_level', nbins=30,
     color='salary', barmode='overlay',
     title="Satisfaction by Salary Level")
     st.plotly_chart(fig1, use_container_width=True)
 
-with col2:
+with st.container():
     st.subheader("🏢 Department Satisfaction")
     dept_sat = df_filtered.groupby('dept')['satisfaction_level'].mean().sort_values()
     fig2 = px.bar(dept_sat, orientation='h',
@@ -76,9 +75,9 @@ with col2:
     fig2.update_layout(showlegend=False, yaxis_title="", xaxis_title="Satisfaction")
     st.plotly_chart(fig2, use_container_width=True)
 
-col3, col4 = st.columns(2)
 
-with col3:
+
+with st.container():
     st.subheader("⚡ Workload Analysis")
     fig3 = px.scatter(df_filtered, x='number_project', y='average_montly_hours',
     color='satisfaction_level', size='last_evaluation',
@@ -89,7 +88,7 @@ with col3:
     annotation_text="Overwork Threshold")
     st.plotly_chart(fig3, use_container_width=True)
 
-with col4:
+with st.container():
     st.subheader("🎯 Performance vs Satisfaction")
     fig4 = px.density_contour(df_filtered, x='last_evaluation',
     y='satisfaction_level',
