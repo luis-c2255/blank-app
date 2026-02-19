@@ -41,12 +41,16 @@ col4.metric("Avg Order", f"${filtered_df['Total Revenue'].mean():,.2f}")
 # Visualizations
 with st.container():
     fig1 = px.bar(filtered_df.groupby('Product Category')['Total Revenue'].sum().reset_index(),
-    x='Product Category', y='Total Revenue', title="Revenue by Category")
+    x='Product Category', y='Total Revenue', title="Revenue by Category", text='Total Revenue', color='Total Revenue',
+    color_continuous_scale='Blues')
+    fig1.update_traces(texttemplate='$%{text:,.0f}', textposition='outside')
+    fig1.update_layout(showlegend=False)
     st.plotly_chart(fig1, width="stretch", height=800)
 
 with st.container():
     fig2 = px.pie(filtered_df.groupby('Region')['Total Revenue'].sum().reset_index(),
-    values='Total Revenue', names='Region', title="Regional Distribution")
+    values='Total Revenue', names='Region', title="Regional Distribution", hole=0.4, color_discrete_sequence=px.colors.qualitative.Set3)
+    fig2.update_traces(textposition='inside', textinfo='percent+label')
     st.plotly_chart(fig2, width="stretch", height=800)
 
 with st.container():
