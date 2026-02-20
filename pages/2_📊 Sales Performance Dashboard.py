@@ -165,7 +165,7 @@ with st.container():
         text_auto=True
     )
     fig4 = apply_chart_theme(fig4)
-    fig4.update_layout(yaxis_title='Value', marker_color=Colors.CHART_COLORS)
+    fig4.update_layout(yaxis_title='Value')
     st.plotly_chart(fig4, width="stretch", height=800)
 
 top_products = filtered_df.groupby("Product Name")["Total Revenue"].sum().sort_values(ascending=False).head(10)
