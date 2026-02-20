@@ -106,6 +106,7 @@ with st.container():
     fig1.update_layout(showlegend=False)
     st.plotly_chart(fig1, width="stretch", height=800)
 
+st.markdown("---")
 with st.container():
     fig2 = px.pie(
         filtered_df.groupby('Region')['Total Revenue'].sum().reset_index(),
@@ -118,6 +119,7 @@ with st.container():
     fig2.update_traces(textposition='inside', textinfo='percent+label')
     st.plotly_chart(fig2, width="stretch", height=800)
 
+st.markdown("---")
 with st.container():
 # Monthly trend
     monthly = filtered_df.groupby(filtered_df['Date'].dt.to_period('M'))['Total Revenue'].sum().reset_index()
@@ -138,6 +140,7 @@ payment_analysis = filtered_df.groupby('Payment Method').agg(
 ).round(2)
 payment_analysis = payment_analysis.sort_values('total_revenue', ascending=False)
 
+st.markdown("---")
 with st.container():
     fig4 = px.bar(
         payment_analysis.reset_index(), 
@@ -155,6 +158,7 @@ top_products = filtered_df.groupby("Product Name")["Total Revenue"].sum().sort_v
 top_10_df = top_products.reset_index().head(10)
 top_10_df.columns = ['Product Name', 'Revenue']
 
+st.markdown("---")
 with st.container():
     fig5 = px.bar(
         top_10_df, 
