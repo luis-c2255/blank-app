@@ -73,7 +73,7 @@ with col4:
         Components.metric_card(
             title="Promotion Rate",
             value= f"{promotion_rate:.1f}%",
-            delta=" ",
+            delta="Promotion Rate",
             card_type="info"
         ),
         unsafe_allow_html=True
