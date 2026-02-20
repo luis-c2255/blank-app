@@ -127,6 +127,7 @@ with st.container():
         title="Satisfaction by Salary Level"
     )
     fig1 = apply_chart_theme(fig1)
+    fig1.update_traces(marker_color=Colors.CHART_COLORS)
     st.plotly_chart(fig1, width="stretch", height=600)
 
 with st.container():
@@ -138,6 +139,7 @@ with st.container():
         title="Average Satisfaction by Department"
     )
     fig2 = apply_chart_theme(fig2)
+    fig2.update_traces(marker_color=Colors.CHART_COLORS)
     fig2.update_layout(showlegend=False, yaxis_title="", xaxis_title="Satisfaction")
     st.plotly_chart(fig2, width="stretch", height=600)
 
@@ -152,7 +154,8 @@ with st.container():
         color='satisfaction_level', 
         size='last_evaluation',
         hover_data=['dept', 'salary'],
-        title="Projects vs Hours (sized by evaluation)"
+        title="Projects vs Hours (sized by evaluation)",
+        color_discrete_sequence=Colors.CHART_COLORS
     )
     fig3 = apply_chart_theme(fig3)
     fig3.add_hline(y=250, line_dash="dash", line_color="red",
@@ -181,6 +184,7 @@ with st.container():
         title='Satisfaction by Department & Salary'
     )
     fig5 = apply_chart_theme(fig5)
+    fig5.update_traces(marker_color=Colors.CHART_COLORS)
     fig5.update_layout(xaxis_title='Department', yaxis_title='Satisfaction Level')
     st.plotly_chart(fig5, width='stretch', height=600)
      
@@ -194,10 +198,12 @@ with st.container():
         title='Employee Performance 3D View', 
         labels={'number_project': 'Projects', 'average_montly_hours': 'Monthly Hours',
                         'satisfaction_level': 'Satisfaction'}, 
-        opacity=0.7
+        opacity=0.7,
+        color_discrete_sequence=Colors.CHART_COLORS
     )
     fig6 = apply_chart_theme(fig6)
     st.plotly_chart(fig6, width='stretch', height=800)
+    
 # High-risk employees table
 st.markdown("---")
 st.markdown(

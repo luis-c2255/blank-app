@@ -90,6 +90,7 @@ with st.container():
     )
     fig = apply_chart_theme(fig)
     fig.update_layout(showlegend=False)
+    fig.update_traces(marker_color=Colors.CHART_COLORS)
     st.plotly_chart(fig, width="stretch", height=600)
 
 st.markdown("---")
@@ -104,7 +105,7 @@ with st.container():
         title='Patient Age Distribution', 
     )
     fig_age = apply_chart_theme(fig_age)
-    fig_age.update_traces(opacity=0.75)
+    fig_age.update_traces(opacity=0.75, marker_color=Colors.CHART_COLORS)
     st.plotly_chart(fig_age, width="stretch", height=600)
 
 st.markdown("---")
@@ -116,7 +117,8 @@ with st.container():
     fig_gender = px.pie(
         df, 
         names='Gender',
-        title='Gender Distribution', 
+        title='Gender Distribution',
+        color_discrete_sequence=Colors.CHART_COLORS
     )
     fig_gender = apply_chart_theme(fig_gender)
     st.plotly_chart(fig_gender, width="stretch", height=600)
@@ -173,6 +175,7 @@ with st.container():
         title=f'Age Distribution - {selected_disease}'
     )
     fig = apply_chart_theme(fig)
+    fig.update_traces(marker_color=Colors.CHART_COLORS)
     st.plotly_chart(fig, width="stretch", height=600)
 
 st.markdown("---")
@@ -185,7 +188,8 @@ with st.container():
         values=gender_dist.values, 
         names=gender_dist.index,
         title=f'Gender Distribution - {selected_disease}', 
-        hole=0.4
+        hole=0.4,
+        color_discrete_sequence=Colors.CHART_COLORS
     )
     fig1 = apply_chart_theme(fig1)
     st.plotly_chart(fig1, width="stretch", height=600)
@@ -208,6 +212,7 @@ with st.container():
         title=f'Top 10 Symptoms for {selected_disease}'
     )
     fig2 = apply_chart_theme(fig2)
+    fig2.update_traces(marker_color=Colors.CHART_COLORS)
     fig2.update_layout(showlegend=False)
     st.plotly_chart(fig2, width="stretch", height=600)
 
@@ -237,6 +242,7 @@ with st.container():
     )
     fig = apply_chart_theme(fig)
     fig.update_layout(showlegend=False)
+    fig.update_traces(marker_color=Colors.CHART_COLORS)
     st.plotly_chart(fig, width="stretch", height=600)
 
 st.markdown("---")
@@ -248,7 +254,8 @@ with st.container():
         color='Gender', 
         opacity=0.5,
         title='Age vs Symptom Count (Sample)',
-        trendline='lowess'
+        trendline='lowess',
+        color_discrete_sequence=Colors.CHART_COLORS
     )
     fig2 = apply_chart_theme(fig2)
     st.plotly_chart(fig2, width="stretch", height=600)

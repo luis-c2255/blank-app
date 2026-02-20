@@ -109,7 +109,7 @@ with st.container():
         color='Total Revenue',
     )
     fig1 = apply_chart_theme(fig1)
-    fig1.update_traces(texttemplate='$%{text:,.0f}', textposition='outside')
+    fig1.update_traces(texttemplate='$%{text:,.0f}', textposition='outside', marker_color=Colors.CHART_COLORS)
     fig1.update_layout(showlegend=False)
     st.plotly_chart(fig1, width="stretch", height=600)
 
@@ -120,7 +120,8 @@ with st.container():
         values='Total Revenue', 
         names='Region', 
         title="Regional Distribution", 
-        hole=0.4
+        hole=0.4,
+        color_discrete_sequence=Colors.CHART_COLORS
     )
     fig2 = apply_chart_theme(fig2)
     fig2.update_traces(textposition='inside', textinfo='percent+label')
@@ -138,6 +139,12 @@ with st.container():
         title="Monthly Revenue Trend"
     )
     fig3 = apply_chart_theme(fig3)
+    fig3.update_traces(
+    line_color=Colors.BLUE_ENERGY,
+    line_width=3,
+    mode='lines+markers',
+    marker=dict(size=8)
+    )
     st.plotly_chart(fig3, width="stretch", height=600)
     
 payment_analysis = filtered_df.groupby('Payment Method').agg(
@@ -158,7 +165,7 @@ with st.container():
         text_auto=True
     )
     fig4 = apply_chart_theme(fig4)
-    fig4.update_layout(yaxis_title='Value')
+    fig4.update_layout(yaxis_title='Value', marker_color=Colors.CHART_COLORS)
     st.plotly_chart(fig4, width="stretch", height=800)
 
 top_products = filtered_df.groupby("Product Name")["Total Revenue"].sum().sort_values(ascending=False).head(10)
@@ -177,7 +184,7 @@ with st.container():
         color="Revenue"
     )
     fig5 = apply_chart_theme(fig5)
-    fig5.update_traces(texttemplate="$%{text:,.0f}", textposition='outside')
+    fig5.update_traces(texttemplate="$%{text:,.0f}", textposition='outside', marker_color=Colors.CHART_COLORS)
     fig5.update_layout(showlegend=False)
     st.plotly_chart(fig5, width="stretch", height=600)
 
