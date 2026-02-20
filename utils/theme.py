@@ -35,7 +35,8 @@ class Colors:
         "#839788",  # Muted Teal
         "#F68EB0",  # Bubblegum
         "#9A955B",  # Leaf
-        "#F4978E"   # Salmon
+        "#F4978E",  # Salmon
+        "#8332AC"   # Indigo
     ]
 
 class Components:
