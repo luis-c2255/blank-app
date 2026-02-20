@@ -65,7 +65,7 @@ with col4:
         Components.metric_card(
             title="Avg Symptoms/Patient",
             value=f"{df['Symptom_Count'].mean():.2f}",
-            delta="Symptoms"
+            delta="Symptoms",
             card_type="error"
         ), unsafe_allow_html=True
     )
