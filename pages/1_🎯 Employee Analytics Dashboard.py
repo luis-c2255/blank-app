@@ -128,6 +128,7 @@ with st.container():
     )
     fig1 = apply_chart_theme(fig1)
     fig1.update_traces(marker_color=Colors.CHART_COLORS)
+    fig1.update_layout(legend_traceorder="reversed")
     st.plotly_chart(fig1, width="stretch", height=600)
 
 with st.container():
