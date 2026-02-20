@@ -180,7 +180,7 @@ st.markdown(
 st.dataframe(filtered_df, use_container_width=True)
 
 # Download Button
-csv = transaction_details.to_csv(index=False).encode('utf-8')
+csv = filtered_df.to_csv(index=False).encode('utf-8')
 
 st.download_button(
     label="📥 Download Transaction Details",
