@@ -81,7 +81,7 @@ with col4:
         Components.metric_card(
             title="Avg Order",
             value=f"${filtered_df['Total Revenue'].mean():,.2f}",
-            delta="Orders"
+            delta="Orders",
             card_type="error"
         ), unsafe_allow_html=True
     )
