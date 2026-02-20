@@ -42,6 +42,17 @@ class Components:
             <h1 style='color: white; margin: 0; font-size: 2.5rem;'>{title}</h1>
         </div>
         """
+    @staticmethod
+    def section_header(title: str, icon: str = "") -> str:
+        """Create a styled section header"""
+        return f"""
+        <div style='margin: 2rem 0 1rem 0; padding-bottom: 0.5rem; 
+                    border-bottom: 2px solid {Colors.BLUE_ENERGY};'>
+            <h2 style='color: {Colors.PLATINUM}; margin: 0; font-size: 1.8rem;'>
+                {icon} {title}
+            </h2>
+        </div>
+        """
     
     @staticmethod
     def metric_card(title: str, value: str, delta: str = "",
