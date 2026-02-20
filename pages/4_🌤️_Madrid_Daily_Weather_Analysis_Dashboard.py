@@ -18,7 +18,7 @@ except FileNotFoundError:
 # Load data
 @st.cache_data
 def load_data():
-    df = pd.read_csv('madrid_weather.csv')
+    df = pd.read_csv('madrid_cleaned.csv')
     df['CET'] = pd.to_datetime(df['CET'])
     return df
 
