@@ -129,7 +129,7 @@ with st.container():
         dept_sat, 
         orientation='h',
         title="Average Satisfaction by Department",
-        color="dept"
+        color="satisfaction_level"
     )
     fig2 = apply_chart_theme(fig2)
     fig2.update_layout(showlegend=False, yaxis_title="", xaxis_title="Satisfaction")
