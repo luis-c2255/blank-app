@@ -127,7 +127,6 @@ with st.container():
         title="Satisfaction by Salary Level"
     )
     fig1 = apply_chart_theme(fig1)
-    fig1.update_traces(marker_color=Colors.CHART_COLORS)
     st.plotly_chart(fig1, width="stretch", height=600)
 
 with st.container():
@@ -184,7 +183,6 @@ with st.container():
         title='Satisfaction by Department & Salary'
     )
     fig5 = apply_chart_theme(fig5)
-    fig5.update_traces(marker_color=Colors.CHART_COLORS)
     fig5.update_layout(xaxis_title='Department', yaxis_title='Satisfaction Level')
     st.plotly_chart(fig5, width='stretch', height=600)
      
