@@ -176,6 +176,8 @@ with st.container():
         hole=0.4,
         color_discrete_sequence=Colors.CHART_COLORS)
     fig4 = apply_chart_theme(fig4)
+    fig4.update_traces(textposition='inside')
+    fig4.update_layout(uniformtext_minsize=12, uniformtext_mode='hide')
     st.plotly_chart(fig4, width="stretch", height=500)
 
 st.markdown("---")
