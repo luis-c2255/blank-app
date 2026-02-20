@@ -218,7 +218,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-col1, col2, col3 = st.column(3)
+col1, col2, col3 = st.columns(3)
 
 with col1:
     fig7 = px.box(filtered_df, x='Season', y='Mean TemperatureC',
