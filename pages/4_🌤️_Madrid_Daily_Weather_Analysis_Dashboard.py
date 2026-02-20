@@ -37,12 +37,12 @@ st.markdown(
     Components.section_header("Filters", "🔍"),
     unsafe_allow_html=True
 )
-year_range = st.sidebar.slider("Select Year Range",
+year_range = st.slider("Select Year Range",
 int(df['Year'].min()),
 int(df['Year'].max()),
 (int(df['Year'].min()), int(df['Year'].max())))
 
-season_filter = st.sidebar.multiselect("Select Seasons",
+season_filter = st.multiselect("Select Seasons",
 options=['Winter', 'Spring', 'Summer', 'Fall'],
 default=['Winter', 'Spring', 'Summer', 'Fall'])
 
