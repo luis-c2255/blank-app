@@ -1,4 +1,13 @@
 import streamlit as st
+import sys
+import os
+
+st.set_page_config(
+    page_title="Multiple Analysis Dashboard",
+    page_icon="📊",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 st.markdown("""
     <style>
@@ -30,12 +39,13 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 1. Page Configuration
-st.set_page_config(
-    page_title="Multiple Analysis Dashboard",
-    page_icon="📊",
-    layout="wide"
-)
+# Load custom CSS
+try:
+    with open('style.css') as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+except FileNotFoundError:
+    st.warning("Custom CSS file not found. Using default styling.")
+
 
 st.title("Multiple Analysis Dashboard")
 
