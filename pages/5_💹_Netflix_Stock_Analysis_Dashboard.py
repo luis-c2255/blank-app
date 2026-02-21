@@ -278,6 +278,19 @@ st.markdown("""
 
 
 with col1:
+    st.markdown("""
+    <style>
+        /* Change the background color of headers of all tables*/
+        thead tr th {
+            background-color: #E50914 !important;
+            color: white !important;
+        }
+        /* Change the color of letter on the cells for better reading */
+        tbody tr td {
+            color: #f0f0f0;
+        }
+    </style>
+    """, unsafe_allow_html=True)
     st.markdown("Top 10 Days with Highest Positive Returns")
     top_volatile = df.nlargest(10, 'Daily_Return')[['Date', 'Close', 'Daily_Return', 'Volume']]
     top_volatile = top_volatile.sort_values('Date', ascending=True)
