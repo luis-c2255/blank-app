@@ -261,7 +261,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 def style_table(df,color_theme):
     html = (
         df.style
@@ -304,18 +304,17 @@ with col2:
 
     st.markdown(style_table(bottom_volatile, color_theme="#c62828"), unsafe_allow_html=True)
 
-st.divider()
-
-col1, col2 = st.columns(2)
-
-with col1:
+with col3:
     st.markdown("Days with Volume Spikes")
     volume_threshold = df['Volume'].mean() + 2 * df['Volume'].std()
     high_volume_days = df[df['Volume'] > volume_threshold][['Date', 'Close', 'Volume', 'Daily_Return']]
 
     st.markdown(style_table(high_volume_days, color_theme="#FFB84D"), unsafe_allow_html=True)
 
-with col2:
+st.divider()
+
+
+with st.container():
     st.markdown("Monthly Performance Summary")
     df['Year'] = df['Date'].apply(lambda x: x.year)
     df['Month'] = df['Date'].apply(lambda x: x.month)
