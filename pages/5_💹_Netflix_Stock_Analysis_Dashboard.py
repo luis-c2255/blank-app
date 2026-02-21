@@ -434,8 +434,6 @@ with st.container():
     st.plotly_chart(fig6, width="stretch")
 
 
-
-
 with col2:
     volume_threshold = df['Volume'].mean() + 2 * df['Volume'].std()
     st.markdown(
@@ -451,6 +449,20 @@ with col2:
     Components.section_header("Monthly Returns", "↩"),
     unsafe_allow_html=True
 )
+
+st.markdown("Monthly Performance Summary")
+    df['Year'] = df['Date'].apply(lambda x: x.year)
+    df['Month'] = df['Date'].apply(lambda x: x.month)
+
+    monthly_performance = df.groupby(['Year', 'Month']).agg({
+        'Close': ['first', 'last', 'min', 'max'],
+        'Volume': 'sum',
+        'Daily_Return': 'sum'
+        }).reset_index()
+
+    monthly_performance.columns=['Year', 'Month', 'Open_Price', 'Close_Price', 'Low', 'High', 'Total_Volume', 'Monthly_Return']
+    monthly_performance['Monthly_Return_Pct'] = ((monthly_performance['Close_Price']-monthly_performance['Open_Price'])/monthly_performance['Open_Price'])*100
+
 with st.container():
     colors = ['green' if x > 0 else 'red' for x in monthly_performance['Monthly_Return_Pct']]
     fig8 = go.Figure()
