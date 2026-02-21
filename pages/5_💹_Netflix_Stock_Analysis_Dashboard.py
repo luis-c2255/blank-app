@@ -124,7 +124,7 @@ with st.container():
             x=df['Date'],
             y=df['Volume'],
             name="Volume",
-            line=dict(color='orange', width=2)
+            line=dict(color='darkgreen', width=2)
         ),
         row=2, col=1
     )
@@ -133,7 +133,7 @@ with st.container():
             x=df['Date'],
             y=df['Volume_MA_30'],
             name="Vol MA 30",
-            line=dict(color='blue', width=2, dash='dash')
+            line=dict(color='yellow', width=2, dash='dash')
         ),
         row=2, col=1
     )
