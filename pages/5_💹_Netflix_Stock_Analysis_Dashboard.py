@@ -542,7 +542,7 @@ with col1:
             "Monthly_Return": "{:.2%}",
             "Monthly_Return_Pct": "{:.2f}%",
         })
-        .applymap(
+        .map(
             lambda v: "color: green; font-weight: bold;" if isinstance(v, float) and v > 0 else "color: red; font-weight: bold;" if isinstance(v, float) and v < 0 else "",
             subset=["Monthly_Return_Pct"]
         )
