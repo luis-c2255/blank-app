@@ -203,7 +203,12 @@ with st.container():
         height=600,
         xaxis_title=dict(text='Trading Volume', font=dict(size=12)),
         yaxis_title=dict(text='Daily_Return (%)', font=dict(size=12)),
-        title=dict(text='Volume vs. Daily Return Correlation', font=dict(size=16, family='Arial', sans-serif), x=0.5, xanchor='center'),
+        title=dict(
+            text='Volume vs. Daily Return Correlation', 
+            font=dict(size=16, family='Arial, sans-serif'), 
+            x=0.5, 
+            xanchor='center'
+        ),
         xaxis=dict(showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)'),
         yaxis=dict(showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)'),
         plot_bgcolor='white',
