@@ -472,7 +472,7 @@ def style_table(df,color_theme):
             "Daily_Return": "{:.2%}",
             "Volume": "{:,.0f}"
         })
-        .applymap(
+        .map(
             lambda v: f"color: {'green' if v > 0 else 'red'}; font-weight: bold;"
             if isinstance(v, float) else "",
             subset=["Daily_Return"]
