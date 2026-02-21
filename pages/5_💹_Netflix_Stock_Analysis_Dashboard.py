@@ -235,6 +235,28 @@ with col3:
 
 st.markdown("---")
 st.markdown(
+    Components.section_header("Correlation Heatmap", "🔥"),
+    unsafe_allow_html=True
+)
+
+with st.container():
+    corr_data = df[['Open', 'High', 'Low', 'Close', 'Volume', 'Daily_Return', 'Volatility_30']].corr()
+
+    fig5 = px.imshow(
+        corr_data,
+        text_auto='.2f', # Añade los números de correlación automáticamente
+        color_continuous_scale='viridis', # Nombre correcto del parámetro
+        aspect="auto",
+        title='Feature Correlation Heatmap',
+        labels=dict(color="Correlation") # Etiqueta para la barra de color
+    )
+    fig5.update_xaxes(side='bottom')
+
+    fig5 = apply_chart_theme(fig5)
+    st.plotly_chart(fig5, width="stretch")
+
+st.markdown("---")
+st.markdown(
     Components.section_header("Volatility Analysis", "📇"),
     unsafe_allow_html=True
 )
