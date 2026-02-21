@@ -671,44 +671,33 @@ st.markdown(
     Components.section_header("Monthly Returns", "↩"),
     unsafe_allow_html=True
 )
+data = {
+	'Day_of_Week': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+	'mean': [0.243, 0.243, 0.110, 0.174, -0.354],
+	'median': [0.248, 0.088, 0.078, 0.229, -0.229],
+	'std': [2.773, 2.303, 2.987, 2.419, 2.750],
+	'count': [191, 207, 205, 204, 201]
+}
+df_week = pd.DataFrame(data)
 
-st.markdown("---")
-st.markdown(
-    Components.section_header("Volume Statistics", "📊"),
-    unsafe_allow_html=True
-)
+data = {
+	'Month': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+	'mean': [0.025, 0.322, 0.052, 0.258, 0.036, 0.377, -0.230, 0.212, -0.052, -0.032, 0.020, 0.021],
+	'median': [-0.459, 0.010, -0.108, 0.181, 0.042, 0.451, -0.087, 0.222, 0.042, 0.084, 0.217, -0.026],
+	'std': [4.370, 2.297, 3.459, 2.513, 1.585, 1.923, 2.519, 2.208, 2.274, 3.050, 2.301, 2.382],
+	'count': [81, 77, 87, 84, 84, 85, 86, 88, 81, 89, 82, 84]
+}
+df_month = pd.DataFrame(data)
 
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown(
-        Components.metric_card(
-        title="Average Daily Volume",
-        value=f"{df['Volume'].mean():,.0f}",
-        delta="Average",
-        card_type="info"
-    ), unsafe_allow_html=True)
+    st.dataframe(df_week, width="stretch")
 
 with col2:
-    st.markdown(
-        Components.metric_card(
-        title="Highest Volume",
-        value=f"{df['Volume'].max():,.0f}",
-        delta=f"{df.loc[df['Volume'].idxmax(), 'Date'].strftime('%Y-%m-%d')}",
-        card_type="success"
-    ), unsafe_allow_html=True)
+    st.dataframe(df_month, width="stretch")
 
-with col3:
-    st.markdown(
-        Components.metric_card(
-            title="Lowest Volume",
-            value=f"{df['Volume'].min():,.0f}",
-            delta=f"{df.loc[df['Volume'].idxmin(), 'Date'].strftime('%Y-%m-%d')}",
-            card_type="error"
-        ), unsafe_allow_html=True
-    )
-
-
+    
 st.markdown("---")
 st.markdown(
     Components.section_header("Technical Indicators", "🎯"),
