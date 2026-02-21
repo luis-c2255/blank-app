@@ -444,11 +444,6 @@ with col2:
         ), unsafe_allow_html=True
     )
 
-    st.markdown("---")
-    st.markdown(
-    Components.section_header("Monthly Returns", "↩"),
-    unsafe_allow_html=True
-)
 
 st.markdown("Monthly Performance Summary")
 df['Year'] = df['Date'].apply(lambda x: x.year)
