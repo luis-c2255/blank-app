@@ -270,7 +270,7 @@ with col1:
     top_volatile = top_volatile.sort_values('Date', ascending=False)
 
     st.dataframe(
-        top_volatile.head(10).style.format({
+        top_volatile.head(10).style({
             'Date',
             'Close',
             'Daily_Return',
