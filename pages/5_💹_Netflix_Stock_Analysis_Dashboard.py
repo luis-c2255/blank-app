@@ -289,7 +289,7 @@ def style_table(df,color_theme):
 
 with col1:
     st.markdown("Top 10 Days with Highest Positive Returns")
-    top_volatile['Date'] = top_volatile['Date'].dt.date
+    df['Date'] = df['Date'].dt.date
     top_volatile = df.nlargest(10, 'Daily_Return')[['Date', 'Close', 'Daily_Return', 'Volume']]
     top_volatile = top_volatile.sort_values('Date', ascending=True)
 
@@ -299,6 +299,7 @@ with col1:
 
 with col2:
     st.markdown("Top 10 Days with Highest Negative Returns")
+    df['Date'] = df['Date'].dt.date
     bottom_volatile = df.nsmallest(10, 'Daily_Return')[['Date', 'Close', 'Daily_Return', 'Volume']]
     bottom_volatile = bottom_volatile.sort_values('Date', ascending=False)
 
