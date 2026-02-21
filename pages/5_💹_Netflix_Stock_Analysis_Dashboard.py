@@ -272,8 +272,6 @@ def style_financial_table(df):
                 ('text-align', 'center')
             ]}
         ])\
-        .highlight_max(subset=['Daily_Return'], color="#22c55e")\
-        .highlight_min(subset=['Daily_Return'], color="#ef4444")\
         .format({'Daily_Return': '{:.2f}%', 'Close': '${:.2f}', 'Volume': '{:,}'})
 
 with col1:
