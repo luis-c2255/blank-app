@@ -368,7 +368,7 @@ with col1:
     st.markdown(
         Components.insight_box(
             title=f"Overbought periods (RSI > 70): {len(overbought)} days",
-            content=f"(overbought.head(10))",
+            content=f"overbought.head(10)",
             box_type="warning"
         ), unsafe_allow_html=True
     )
