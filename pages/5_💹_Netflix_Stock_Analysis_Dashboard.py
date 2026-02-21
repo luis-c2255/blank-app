@@ -549,7 +549,6 @@ with col1:
         xaxis=dict(showgrid=False),
         width=1000,
         height=600,
-        plot_bgcolor='white',
         showlegend=False
     )
     st.plotly_chart(fig_bar, width="stretch")
