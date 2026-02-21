@@ -353,7 +353,7 @@ with col2:
         ])
         .to_html()
     )
-     st.markdown(
+    st.markdown(
         f'<div style="height: 400px; overflow: auto; border: 1px solid #ccc; border-radius: 8px;">{html}</div>',
         unsafe_allow_html=True
     )
