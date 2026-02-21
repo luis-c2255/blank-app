@@ -367,7 +367,7 @@ oversold = df[df['RSI'] < 30][['Date', 'Close', 'RSI']]
 with col1:
     st.markdown(
         Components.insight_box(
-            title=f"\nOverbought periods (RSI > 70): {len(overbought)} days",
+            title=f"Overbought periods (RSI > 70): {len(overbought)} days",
             content=f"(overbought.head(10))",
             box_type="warning"
         ), unsafe_allow_html=True
