@@ -692,12 +692,12 @@ df_month = pd.DataFrame(data)
 col1, col2 = st.columns(2)
 
 with col1:
-    st.dataframe(df_week, width="stretch")
+    st.dataframe(df_week, width="stretch", hide_index=True)
 
 with col2:
-    st.dataframe(df_month, width="stretch")
+    st.dataframe(df_month, width="stretch", hide_index=True)
 
-    
+
 st.markdown("---")
 st.markdown(
     Components.section_header("Technical Indicators", "🎯"),
