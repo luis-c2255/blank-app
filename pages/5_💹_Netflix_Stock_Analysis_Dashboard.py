@@ -434,130 +434,7 @@ with st.container():
     st.plotly_chart(fig6, width="stretch")
 
 
-st.markdown("---")
-st.markdown(
-    Components.section_header("Correlation Heatmap", "🔥"),
-    unsafe_allow_html=True
-)
 
-with st.container():
-    corr_data = df[['Open', 'High', 'Low', 'Close', 'Volume', 'Daily_Return', 'Volatility_30']].corr()
-
-    fig7 = px.imshow(
-        corr_data,
-        text_auto='.2f', 
-        color_continuous_scale='viridis', 
-        aspect="auto",
-        title='Feature Correlation Heatmap',
-        labels=dict(color="Correlation") 
-    )
-    fig7.update_xaxes(side='bottom')
-
-    fig7 = apply_chart_theme(fig7)
-    st.plotly_chart(fig7, width="stretch")
-
-st.markdown("---")
-st.markdown(
-    Components.section_header("Advanced Analysis & Insights", "✨"),
-    unsafe_allow_html=True
-)
-
-col1, col2, col3 = st.columns(3)
-def style_table(df,color_theme):
-    html = (
-        df.style
-        .hide()
-        .format({
-            "Close": "${:.2f}",
-            "Daily_Return": "{:.2%}",
-            "Volume": "{:,.0f}"
-        })
-        .map(
-            lambda v: f"color: {'green' if v > 0 else 'red'}; font-weight: bold;"
-            if isinstance(v, float) else "",
-            subset=["Daily_Return"]
-        )
-        .set_table_styles([
-            {"selector": "table", "props": "width: 100%; border-collapse: collapse;"},
-            {"selector": "th", "props": f"background-color: {color_theme}; color: white; padding: 8px; text-align: center; position: sticky; top: 0;"},
-            {"selector": "td", "props": "padding: 8px; text-align: center; border-bottom: 1px solid #ddd;"},
-            {"selector": "tr:hover", "props": "background-color: #f5f5f5;"},
-        ])
-        .to_html()
-    )
-    return f'<div style="height: 380px; overflow: auto; border: 1px solid #ccc; border-radius: 8px;">{html}</div>'
-
-
-with col1:
-    st.markdown("Top 10 Days with Highest Positive Returns")
-    df['Date'] = df['Date'].dt.date
-    top_volatile = df.nlargest(10, 'Daily_Return')[['Date', 'Close', 'Daily_Return', 'Volume']]
-    top_volatile = top_volatile.sort_values('Date', ascending=True)
-
-    st.markdown(style_table(top_volatile, color_theme="#2e7d32"), unsafe_allow_html=True)
-
-
-
-with col2:
-    st.markdown("Top 10 Days with Highest Negative Returns")
-    bottom_volatile = df.nsmallest(10, 'Daily_Return')[['Date', 'Close', 'Daily_Return', 'Volume']]
-    bottom_volatile = bottom_volatile.sort_values('Date', ascending=False)
-
-    st.markdown(style_table(bottom_volatile, color_theme="#c62828"), unsafe_allow_html=True)
-
-with col3:
-    st.markdown("Days with Volume Spikes")
-    volume_threshold = df['Volume'].mean() + 2 * df['Volume'].std()
-    high_volume_days = df[df['Volume'] > volume_threshold][['Date', 'Close', 'Volume', 'Daily_Return']]
-
-    st.markdown(style_table(high_volume_days, color_theme="#FFB84D"), unsafe_allow_html=True)
-
-st.divider()
-
-col1, col2 = st.columns(2)
-
-with col1:
-    st.markdown("Monthly Performance Summary")
-    df['Year'] = df['Date'].apply(lambda x: x.year)
-    df['Month'] = df['Date'].apply(lambda x: x.month)
-
-    monthly_performance = df.groupby(['Year', 'Month']).agg({
-        'Close': ['first', 'last', 'min', 'max'],
-        'Volume': 'sum',
-        'Daily_Return': 'sum'
-        }).reset_index()
-
-    monthly_performance.columns=['Year', 'Month', 'Open_Price', 'Close_Price', 'Low', 'High', 'Total_Volume', 'Monthly_Return']
-    monthly_performance['Monthly_Return_Pct'] = ((monthly_performance['Close_Price']-monthly_performance['Open_Price'])/monthly_performance['Open_Price'])*100
-
-    html = (
-        monthly_performance.style
-        .hide()
-        .format({
-            "Open_Price": "${:.2f}",
-            "Close_Price": "${:.2f}",
-            "Low": "${:.2f}",
-            "High": "${:.2f}",
-            "Total_Volume": "{:,.0f}",
-            "Monthly_Return": "{:.2%}",
-            "Monthly_Return_Pct": "{:.2f}%",
-        })
-        .map(
-            lambda v: "color: green; font-weight: bold;" if isinstance(v, float) and v > 0 else "color: red; font-weight: bold;" if isinstance(v, float) and v < 0 else "",
-            subset=["Monthly_Return_Pct"]
-        )
-        .set_table_styles([
-            {"selector": "table", "props": "width: 100%; border-collapse: collapse;"},
-            {"selector": "th", "props": "background-color: #264653; color: white; padding: 8px; text-align: center; position: sticky; top: 0;"},
-            {"selector": "td", "props": "padding: 8px; text-align: center; border-bottom: 1px solid #ddd;"},
-            {"selector": "tr:hover", "props": "background-color: #f5f5f5;"},
-        ])
-        .to_html()
-    )
-    st.markdown(
-        f'<div style="height: 400px; overflow: auto; border: 1px solid #ccc; border-radius: 8px;">{html}</div>',
-        unsafe_allow_html=True
-    )
 
 with col2:
     volume_threshold = df['Volume'].mean() + 2 * df['Volume'].std()
@@ -710,27 +587,6 @@ st.markdown(
     Components.section_header("Monthly Returns", "↩"),
     unsafe_allow_html=True
 )
-with st.container():
-    colors = ['green' if x > 0 else 'red' for x in monthly_performance['Monthly_Return_Pct']]
-    fig9 = go.Figure()
-    fig9.add_trace(go.Bar(
-        x=list(range(len(monthly_performance))),
-        y=monthly_performance['Monthly_Return_Pct'],
-        marker=dict(color=colors, opacity=0.7),
-        showlegend=False
-    ))
-    fig9.add_hline(y=0, line=dict(color='black', width=0.8))
-
-    fig.update_layout(
-        title=dict(text='Netflix Monthly Returns (%)', font=dict(size=16, family='Arial Black')),
-        xaxis_title='Month Index',
-        yaxis_title='Monthly Return (%)',
-        width=1400,
-        height=600,
-        yaxis=dict(gridcolor='rgba(128, 128, 128, 0.3)', showgrid=True),
-        xaxis=dict(showgrid=False)
-    )
-    st.plotly_chart(fig9, width="stretch")
 
 st.markdown("---")
 st.markdown(
@@ -812,4 +668,128 @@ with col4:
             delta="90-Day",
             card_type="info"
         ), unsafe_allow_html=True
+    )
+st.markdown("---")
+st.markdown(
+    Components.section_header("Correlation Heatmap", "🔥"),
+    unsafe_allow_html=True
+)
+
+with st.container():
+    corr_data = df[['Open', 'High', 'Low', 'Close', 'Volume', 'Daily_Return', 'Volatility_30']].corr()
+
+    fig7 = px.imshow(
+        corr_data,
+        text_auto='.2f', 
+        color_continuous_scale='viridis', 
+        aspect="auto",
+        title='Feature Correlation Heatmap',
+        labels=dict(color="Correlation") 
+    )
+    fig7.update_xaxes(side='bottom')
+
+    fig7 = apply_chart_theme(fig7)
+    st.plotly_chart(fig7, width="stretch")
+
+st.markdown("---")
+st.markdown(
+    Components.section_header("Advanced Analysis & Insights", "✨"),
+    unsafe_allow_html=True
+)
+
+col1, col2, col3 = st.columns(3)
+def style_table(df,color_theme):
+    html = (
+        df.style
+        .hide()
+        .format({
+            "Close": "${:.2f}",
+            "Daily_Return": "{:.2%}",
+            "Volume": "{:,.0f}"
+        })
+        .map(
+            lambda v: f"color: {'green' if v > 0 else 'red'}; font-weight: bold;"
+            if isinstance(v, float) else "",
+            subset=["Daily_Return"]
+        )
+        .set_table_styles([
+            {"selector": "table", "props": "width: 100%; border-collapse: collapse;"},
+            {"selector": "th", "props": f"background-color: {color_theme}; color: white; padding: 8px; text-align: center; position: sticky; top: 0;"},
+            {"selector": "td", "props": "padding: 8px; text-align: center; border-bottom: 1px solid #ddd;"},
+            {"selector": "tr:hover", "props": "background-color: #f5f5f5;"},
+        ])
+        .to_html()
+    )
+    return f'<div style="height: 380px; overflow: auto; border: 1px solid #ccc; border-radius: 8px;">{html}</div>'
+
+
+with col1:
+    st.markdown("Top 10 Days with Highest Positive Returns")
+    df['Date'] = df['Date'].dt.date
+    top_volatile = df.nlargest(10, 'Daily_Return')[['Date', 'Close', 'Daily_Return', 'Volume']]
+    top_volatile = top_volatile.sort_values('Date', ascending=True)
+
+    st.markdown(style_table(top_volatile, color_theme="#2e7d32"), unsafe_allow_html=True)
+
+
+
+with col2:
+    st.markdown("Top 10 Days with Highest Negative Returns")
+    bottom_volatile = df.nsmallest(10, 'Daily_Return')[['Date', 'Close', 'Daily_Return', 'Volume']]
+    bottom_volatile = bottom_volatile.sort_values('Date', ascending=False)
+
+    st.markdown(style_table(bottom_volatile, color_theme="#c62828"), unsafe_allow_html=True)
+
+with col3:
+    st.markdown("Days with Volume Spikes")
+    volume_threshold = df['Volume'].mean() + 2 * df['Volume'].std()
+    high_volume_days = df[df['Volume'] > volume_threshold][['Date', 'Close', 'Volume', 'Daily_Return']]
+
+    st.markdown(style_table(high_volume_days, color_theme="#FFB84D"), unsafe_allow_html=True)
+
+st.divider()
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.markdown("Monthly Performance Summary")
+    df['Year'] = df['Date'].apply(lambda x: x.year)
+    df['Month'] = df['Date'].apply(lambda x: x.month)
+
+    monthly_performance = df.groupby(['Year', 'Month']).agg({
+        'Close': ['first', 'last', 'min', 'max'],
+        'Volume': 'sum',
+        'Daily_Return': 'sum'
+        }).reset_index()
+
+    monthly_performance.columns=['Year', 'Month', 'Open_Price', 'Close_Price', 'Low', 'High', 'Total_Volume', 'Monthly_Return']
+    monthly_performance['Monthly_Return_Pct'] = ((monthly_performance['Close_Price']-monthly_performance['Open_Price'])/monthly_performance['Open_Price'])*100
+
+    html = (
+        monthly_performance.style
+        .hide()
+        .format({
+            "Open_Price": "${:.2f}",
+            "Close_Price": "${:.2f}",
+            "Low": "${:.2f}",
+            "High": "${:.2f}",
+            "Total_Volume": "{:,.0f}",
+            "Monthly_Return": "{:.2%}",
+            "Monthly_Return_Pct": "{:.2f}%",
+        })
+        .map(
+            lambda v: "color: green; font-weight: bold;" if isinstance(v, float) and v > 0 else "color: red; font-weight: bold;" if isinstance(v, float) and v < 0 else "",
+            subset=["Monthly_Return_Pct"]
+        )
+        .set_table_styles([
+            {"selector": "table", "props": "width: 100%; border-collapse: collapse;"},
+            {"selector": "th", "props": "background-color: #264653; color: white; padding: 8px; text-align: center; position: sticky; top: 0;"},
+            {"selector": "td", "props": "padding: 8px; text-align: center; border-bottom: 1px solid #ddd;"},
+            {"selector": "tr:hover", "props": "background-color: #f5f5f5;"},
+        ])
+        .to_html()
+    )
+    st.markdown(
+        f'<div style="height: 400px; overflow: auto; border: 1px solid #ccc; border-radius: 8px;">{html}</div>',
+        unsafe_allow_html=True
     )
