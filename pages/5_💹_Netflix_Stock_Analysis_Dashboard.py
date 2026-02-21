@@ -433,7 +433,6 @@ with st.container():
     fig6 = apply_chart_theme(fig6)
     st.plotly_chart(fig6, width="stretch")
 
-st.markdown("Monthly Performance Summary")
 df['Year'] = df['Date'].apply(lambda x: x.year)
 df['Month'] = df['Date'].apply(lambda x: x.month)
 
