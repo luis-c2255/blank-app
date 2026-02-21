@@ -263,29 +263,24 @@ st.markdown(
 
 col1, col2 = st.columns(2)
 
-st.markdown("Top 10 Days with Highest Positive Returns")
-
 with col1:
+    st.markdown("Top 10 Days with Highest Positive Returns")
     top_volatile = df.nlargest(10, 'Daily_Return')[['Date', 'Close', 'Daily_Return', 'Volume']]
-    top_volatile = top_volatile.sort_values('Date', ascending=False)
+    top_volatile = top_volatile.sort_values('Date', ascending=True)
 
+<<<<<<< HEAD
+    st.dataframe(top_volatile.head(10), width='content', hide_index=True)
+=======
     st.dataframe(top_volatile.head(10), width='content')
+>>>>>>> 214c6958ee61bae7e4c9a407ce3bbaca824c9600
 
-st.markdown("Top 10 Days with Highest Negative Returns")
 
 with col2:
+    st.markdown("Top 10 Days with Highest Negative Returns")
     bottom_volatile = df.nsmallest(10, 'Daily_Return')[['Date', 'Close', 'Daily_Return', 'Volume']]
     bottom_volatile = bottom_volatile.sort_values('Date', ascending=False)
-    st.dataframe(
-        bottom_volatile.head(10).style.format({
-            'Date',
-            'Close',
-            'Daily_Return',
-            'Volume'
-        }).background_gradient(subset=['Daily_Return'], cmap='Greens'), width='content', height=400
-    )
 
-
+    st.dataframe(bottom_volatile.head(10), width='content', hide_index=True)
 
 st.markdown("---")
 st.markdown(
