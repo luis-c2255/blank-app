@@ -620,9 +620,9 @@ with col1:
 with col2:
     st.markdown(
         Components.metric_card(
-        title="Median Daily Return",
-        value=f"{df['Daily_Return'].median():.3f}%",
-        delta="Median",
+        title="Daily_Volatility_Pct",
+        value=f"df['Daily_Return'].std()",
+        delta="PCT",
         card_type="info"
     ), unsafe_allow_html=True)
 
