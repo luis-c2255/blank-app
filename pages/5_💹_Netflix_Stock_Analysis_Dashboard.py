@@ -1200,8 +1200,10 @@ with col4:
     st.markdown(
         Components.insight_box(
             title="Risk Assessment",
-            content=f"🟡 Sharpe Ratio (0.03): MODERATE - Returns compensate for risk"\n
-                    f"⚠️ Max Drawdown (-48.0%): HIGH - Significant downside risk experienced",
+            content=st.markdown("""
+                    f"🟡 Sharpe Ratio (0.03): MODERATE - Returns compensate for risk"\n
+                    f"⚠️ Max Drawdown (-48.0%): HIGH - Significant downside risk experienced"
+                    """, unsafe_allow_html=True),
             box_type="warning"
     ),
     unsafe_allow_html=True
