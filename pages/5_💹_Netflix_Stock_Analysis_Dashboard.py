@@ -1175,7 +1175,7 @@ with col2:
     st.markdown(
         Components.metric_card(
             title="RSI Assessment",
-            value=f"🟡 (32.7) NEUTRAL",
+            value=f"🟡 NEUTRAL",
             delta=f"No extreme conditions",
             card_type="info"
         ),
@@ -1208,7 +1208,7 @@ with col1:
     st.markdown(
         Components.metric_card(
             title="Volatility Analysis",
-            value=f"⚠️ Current volatility (5.34%) is HIGH",
+            value=f"⚠️ HIGH",
             delta=f"Increased risk",
             card_type="error"
         ),
@@ -1218,7 +1218,7 @@ with col2:
     st.markdown(
         Components.metric_card(
             title="Volume Analysis",
-            value=f"⚡ Recent volume is ELEVATED",
+            value=f"⚡ ELEVATED",
             delta=f"Strong interest/momentum",
             card_type="success"
         ),
@@ -1228,7 +1228,7 @@ with col3:
     st.markdown(
         Components.metric_card(
             title="Sharpen Ratio",
-            value=f"🟡 (0.03) MODERATE",
+            value=f"🟡 MODERATE",
             delta=f"Returns compensate for risk",
             card_type="warning"
         ),
@@ -1238,7 +1238,7 @@ with col4:
     st.markdown(
         Components.metric_card(
             title="Drawdown",
-            value=f"⚠️ (-48.0%) HIGH",
+            value=f"⚠️ HIGH",
             delta=f"Significant downside risk experienced",
             card_type="error"
         ),
