@@ -269,7 +269,7 @@ with st.container():
         subplot_titles=('', '')
     )
 
-    Price chart (top subplot)
+    # Price chart (top subplot)
     fig4.add_trace(
         go.Scatter(
             x=df['Date'],
