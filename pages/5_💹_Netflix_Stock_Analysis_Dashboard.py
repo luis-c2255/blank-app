@@ -260,27 +260,28 @@ def calculate_rsi(data, window=14):
 df['RSI'] = calculate_rsi(df['Close'])
 
 with st.container():
-    # Plot RSI
+    # Create subplots with 2 rows, shared x-axis
     fig4 = make_subplots(
         rows=2, cols=1,
         shared_xaxes=True,
-        vertical_spacing=0.03,
+        vertical_spacing=0.05,
         row_heights=[0.67, 0.33],
         subplot_titles=('', '')
     )
-    # Price chart
+
+     Price chart (top subplot)
     fig4.add_trace(
         go.Scatter(
             x=df['Date'],
             y=df['Close'],
             mode='lines',
             line=dict(color='#E50914', width=1.5),
-            name='Close Price',
-            showlegend=False
+            name='Close Price'
         ),
         row=1, col=1
     )
-    # RSI chart
+
+    # RSI chart (bottom subplot)
     fig4.add_trace(
         go.Scatter(
             x=df['Date'],
@@ -291,28 +292,33 @@ with st.container():
         ),
         row=2, col=1
     )
-    # Overbought line
+
+    # Overbought line (70)
     fig4.add_trace(
         go.Scatter(
             x=df['Date'],
             y=[70] * len(df),
             mode='lines',
             line=dict(color='red', width=1, dash='dash'),
-            name='Overbought (70)'
+            name='Overbought (70)',
+            showlegend=True
         ),
         row=2, col=1    
     )
-    # Oversold line
+
+    # Oversold line (30)
     fig4.add_trace(
         go.Scatter(
             x=df['Date'],
             y=[30] * len(df),
             mode='lines',
             line=dict(color='green', width=1, dash='dash'),
-            name='Oversold (30)'
+            name='Oversold (30)',
+            showlegend=True
         ),
         row=2, col=1
     )
+
     # Fill between 30 and 70
     fig4.add_trace(
         go.Scatter(
@@ -326,30 +332,26 @@ with st.container():
         ),
         row=2, col=1
     )
-    # Update layout
-    fig4.update_xaxes(title_text='Date', title_font=dict(size=12), row=2, col=1)
-    fig4.update_yaxes(title_text='Close Price (USD)', title_font=dict(size=12), row=1, col=1)
-    fig4.update_yaxes(title_text='RSI', title_font=dict(size=12), range=[0, 100], row=2, col=1)
 
+    # Update layout
     fig4.update_layout(
         title=dict(
             text='Netflix Stock Price with RSI Indicator',
-            font=dict(size=16, family='Arial, sans-serif'),
-            x=0.5,
-            xanchor='center'
+            font=dict(size=16, family='Arial, bold')
         ),
         height=800,
         width=1400,
         showlegend=True,
-        legend=dict(x=0.01, y=0.35, xanchor='left', yanchor='top'),
-        hovermode='x unified',
-        plot_bgcolor='white',
-        xaxis=dict(showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)'),
-        yaxis=dict(showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)'),
-        xaxis2=dict(showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)'),
-        yaxis2=dict(showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)')    
+        hovermode='x unified'
     )
-    st.plotly_chart(fig4, width="stretch")
+
+# Update y-axes
+fig4.update_yaxes(title_text='Close Price (USD)', title_font=dict(size=12), row=1, col=1, showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)')
+fig4.update_yaxes(title_text='RSI', title_font=dict(size=12), range=[0, 100], row=2, col=1, showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)')
+
+# Update x-axis
+fig4.update_xaxes(title_text='Date', title_font=dict(size=12), row=2, col=1, showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)')
+st.plotly_chart(fig4, width="stretch")
 
 col1, col2, = st.columns(2)
 
