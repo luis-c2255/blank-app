@@ -1011,7 +1011,7 @@ st.plotly_chart(fig11, width="stretch")
 with col2:
     def style_table(df,color_theme):
         html = (
-            df.style
+            df.style,
             .hide()
             .format({
                 "yhat": "${:.2f}",
