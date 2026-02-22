@@ -846,7 +846,7 @@ fig8.add_trace(go.Scatter(
     y=df['Close'],
     mode='lines',
     name='Close Price',
-    line=dict(color='white', width=1.5)
+    line=dict(color='purple', width=1.5)
 ))
 
 fig8.add_trace(go.Scatter(
