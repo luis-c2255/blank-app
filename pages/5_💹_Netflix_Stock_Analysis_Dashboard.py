@@ -713,7 +713,7 @@ def style_table(df,color_theme):
         df.style
         .hide()
         .set_table_styles([
-            {"selector": "table", "props": "width: 100%; border-collapse: collapse;"},
+            {"selector": "table", "props": "width: 150%; border-collapse: collapse;"},
             {"selector": "th", "props": f"background-color: {color_theme}; color: white; padding: 8px; text-align: center; position: sticky; top: 0;"},
             {"selector": "td", "props": "padding: 8px; text-align: center; border-bottom: 1px solid #ddd;"},
             {"selector": "tr:hover", "props": "background-color: #f5f5f5;"},
