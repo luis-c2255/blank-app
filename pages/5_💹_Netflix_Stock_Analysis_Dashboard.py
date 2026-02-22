@@ -909,6 +909,279 @@ st.plotly_chart(fig9, width="stretch")
 
 st.markdown("---")
 st.markdown(
+    Components.section_header("Time Series Forecasting with Prophet", "🎲"),
+    unsafe_allow_html=True
+)
+from prophet import Prophet
+
+col1, col2 = st.columns(2)
+
+with col1:
+    # Prepare data for Prophet (requires 'ds' and 'y' columns)
+        prophet_df = df[['Date', 'Close']].rename(columns={'Date': 'ds', 'Close': 'y'})
+
+# Initialize and fit model
+model = Prophet(daily_seasonality=False, yearly_seasonality=True, weekly_seasonality=True)
+model.fit(prophet_df)
+
+# Make future predictions (30 days)
+future = model.make_future_dataframe(periods=30)
+forecast = model.predict(future)
+df_forecast = forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail(30)
+
+# Plot forecast using Plotly
+fig10 = go.Figure()
+
+# Add actual data points
+fig10.add_trace(go.Scatter(
+    x=prophet_df['ds'],
+    y=prophet_df['y'],
+    mode='markers',
+    name='Actual',
+    marker=dict(color='black', size=3)
+))
+
+# Add forecast line
+fig10.add_trace(go.Scatter(
+    x=forecast['ds'],
+    y=forecast['yhat'],
+    mode='lines',
+    name='Forecast',
+    line=dict(color='#0072B2', width=2)
+))
+
+# Add uncertainty interval
+fig10.add_trace(go.Scatter(
+    x=forecast['ds'],
+    y=forecast['yhat_upper'],
+    mode='lines',
+    line=dict(width=0),
+    showlegend=False,
+    hoverinfo='skip'
+))
+
+fig10.add_trace(go.Scatter(
+    x=forecast['ds'],
+    y=forecast['yhat_lower'],
+    mode='lines',
+    line=dict(width=0),
+    fillcolor='rgba(0, 114, 178, 0.2)',
+    fill='tonexty',
+    name='Uncertainty',
+    hoverinfo='skip'
+))
+
+fig10.update_layout(
+    title=dict(text='Netflix Stock Price Forecast (Prophet)', font=dict(size=16, family='Arial, bold')),
+    xaxis_title='Date',
+    yaxis_title='Price (USD)',
+    hovermode='x unified',
+    template='plotly_white'
+)
+st.plotly_chart(fig10, width="stretch")
+
+# Determine which components exist
+components = []
+if 'trend' in forecast.columns:
+    components.append('trend')
+if 'weekly' in forecast.columns:
+    components.append('weekly')
+if 'yearly' in forecast.columns:
+    components.append('yearly')
+
+fig11 = make_subplots(rows=len(components), cols=1, subplot_titles=components)
+
+for i, component in enumerate(components, 1):
+    fig11.add_trace(
+        go.Scatter(
+            x=forecast['ds'],
+            y=forecast[component],
+            mode='lines',
+            name=component.capitalize(),
+            line=dict(color='#0072B2')
+        ),
+        row=i, col=1
+    )
+    fig11.update_xaxis(title_text='Date', row=i, col=1)
+    fig11.update_yaxis(title_text=component.capitalize(), row=i, col=1)
+
+fig11.update_layout(height=300*len(components), showlegend=False)
+st.plotly_chart(fig11, width="stretch")
+
+with col2:
+    def style_table(df,color_theme):
+    html = (
+        df.style
+        .hide()
+        .format({
+            "yhat": "${:.3f}",
+            "yhat_lower": "{:.3f}",
+            "yhat_upper": "{:.3f}"
+        })
+        .set_table_styles([
+            {"selector": "table", "props": "width: 100%; border-collapse: collapse;"},
+            {"selector": "th", "props": f"background-color: {color_theme}; color: white; padding: 8px; text-align: center; position: sticky; top: 0;"},
+            {"selector": "td", "props": "padding: 8px; text-align: center; border-bottom: 1px solid #ddd;"},
+            {"selector": "tr:hover", "props": "background-color: #f5f5f5;"},
+        ])
+        .to_html()
+    )
+    return f'<div style="height: 380px; overflow: auto; border: 1px solid #ccc; border-radius: 8px;">{html}</div>'
+st.markdown(style_table(df_forecast, color_theme="#2e7d32"), unsafe_allow_html=True)
+
+
+st.markdown("---")
+st.markdown(
+    Components.section_header("Trend & Risk Analysis", "💹"),
+    unsafe_allow_html=True
+)
+col1, col2, col3 = st.columns(3)
+with col1:
+    # Trend analysis
+    if df['Close'].iloc[-1] > df['MA_30'].iloc[-1] > df['MA_90'].iloc[-1]:
+        trend = "Strong Uptrend"
+    elif df['Close'].iloc[-1] < df['MA_30'].iloc[-1] < df['MA_90'].iloc[-1]:
+        trend = "Strong Downtrend"
+    else:
+        trend = "Sideways/Mixed"
+    st.markdown(
+        Components.metric_card(
+            title="Current Trend",
+            value=f"{trend}",
+            delta="⬇",
+            card_type="warning"
+        ), unsafe_allow_html=True
+    )
+with col2:
+    # Calculate Sharpe Ratio (assuming risk-free rate of 2% annually)
+    risk_free_rate = 0.02 / 252 # Daily risk-free rate
+    sharpe_ratio = (df['Daily_Return'].mean() / 100 - risk_free_rate) / (df['Daily_Return'].std() / 100)
+    st.markdown(
+        Components.metric_card(
+            title="Sharpe Ratio",
+            value=f"{sharpe_ratio:.3f}",
+            delta="⬅",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col3:
+    cumulative_returns = (1 + df['Daily_Return'] / 100).cumprod()
+    running_max = cumulative_returns.cummax()
+    drawdown = (cumulative_returns - running_max) / running_max
+    max_drawdown = drawdown.min()
+    st.markdown(
+        Components.metric_card(
+            title="Drawdown",
+            value=f"{max_drawdown * 100:.2f}%",
+            delta="⬇",
+            card_type="error"
+        ), unsafe_allow_html=True
+    )
+st.markdown("---")
+st.markdown(
+    Components.section_header("Netflix Stock Analysis Dashboard", "📊"),
+    unsafe_allow_html=True
+)
+with st.container():
+    # Create subplots
+    fig12 = make_subplots(
+    rows=3, cols=1,
+    shared_xaxes=True,
+    vertical_spacing=0.05,
+    subplot_titles=('Stock Price with Moving Averages', 'Trading Volume', 'RSI Indicator'),
+    row_heights=[0.5, 0.25, 0.25]
+    )
+
+    # Candlestick chart
+    fig12.add_trace(
+    go.Candlestick(
+    x=df['Date'],
+    open=df['Open'],
+    high=df['High'],
+    low=df['Low'],
+    close=df['Close'],
+    name='OHLC'
+    ),
+    row=1, col=1
+    )
+
+    # Moving averages
+    fig12.add_trace(
+    go.Scatter(x=df['Date'], y=df['MA_7'], name='7-Day MA', line=dict(color='blue', width=1)),
+    row=1, col=1
+    )
+
+    fig12.add_trace(
+    go.Scatter(x=df['Date'], y=df['MA_30'], name='30-Day MA', line=dict(color='orange', width=1)),  
+    row=1, col=1
+    )
+
+    fig12.add_trace(
+    go.Scatter(x=df['Date'], y=df['MA_90'], name='90-Day MA', line=dict(color='green', width=1)),
+    row=1, col=1
+    )
+
+    # Volume bar chart
+    fig12.add_trace(
+    go.Bar(x=df['Date'], y=df['Volume'], name='Volume', marker_color='steelblue', opacity=0.6),
+    row=2, col=1    
+    )
+
+    # Volume MA
+    fig12.add_trace(
+    go.Scatter(x=df['Date'], y=df['Volume_MA_30'], name='Volume 30-Day MA', line=dict(color='orange', width=2)),
+    row=2, col=1
+    )
+
+    # RSI
+    fig12.add_trace(
+    go.Scatter(x=df['Date'], y=df['RSI'], name='RSI', line=dict(color='purple', width=1.5)),
+    row=3, col=1
+    )
+
+# RSI thresholds
+fig12.add_hline(y=70, line_dash="dash", line_color="red", row=3, col=1, annotation_text="Overbought")
+fig12.add_hline(y=30, line_dash="dash", line_color="green", row=3, col=1, annotation_text="Oversold")
+
+# Update layout
+fig12.update_layout(
+title='Netflix Stock Analysis Dashboard',
+height=900,
+showlegend=True,
+xaxis_rangeslider_visible=False,
+hovermode='x unified'
+)
+
+fig12.update_yaxes(title_text="Price (USD)", row=1, col=1)
+fig12.update_yaxes(title_text="Volume", row=2, col=1)
+fig12.update_yaxes(title_text="RSI", row=3, col=1)
+fig12.update_xaxes(title_text="Date", row=3, col=1)
+
+st.plotly_chart(fig12, width="stretch")
+
+st.markdown("---")
+st.markdown(
+    Components.section_header("Technical Analysis Signals", "🎯"),
+    unsafe_allow_html=True
+)
+
+col1, col2, c = st.columns(2)
+with col1:
+    st.markdown(
+        Components.insight_box(
+            title="Current RSI",
+            content=f"{df['RSI'].iloc[-1]:.2f}",
+            box_type="info"
+    ),
+    unsafe_allow_html=True
+)
+
+
+
+
+
+st.markdown("---")
+st.markdown(
     Components.section_header("Advanced Analysis & Insights", "✨"),
     unsafe_allow_html=True
 )
