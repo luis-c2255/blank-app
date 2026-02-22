@@ -410,34 +410,46 @@ st.markdown(
     unsafe_allow_html=True
 )
 with st.container():
-    fig6 = px.histogram(
-        df,
-        x='Daily_Return',
-        nbins=50,
-        title="Distribution of Daily Returns"
-    )
-    fig6.update_traces(
-        marker_line_color='black',
-        marker_line_width=3,
-        opacity=0.7
-    )
-    mean_val = df['Daily_Return'].mean()
+    data = df['Daily_Return'].dropna()
+    mean_val = data.mean()
 
-    fig6.add_vline(
-        x=mean_val,
-        line_dash='dash',
-        line_color='green',
-        annotation_text=f"Mean: {mean_val:.2f}%",
-        annotation_position="top right"
-    )
-    fig6.update_layout(
-        xaxis_title='Daily Return (%)',
-        yaxis_title='Frequency',
-        showlegend=True,
-        height=500
-    )
-    fig6 = apply_chart_theme(fig6)
-    st.plotly_chart(fig6, width="stretch")
+fig6 = go.Figure()
+
+fig6.add_trace(go.Histogram(
+    x=data,
+    nbinsx=50,
+    marker=dict(
+        color='#E50914',
+        opacity=0.7,
+        line=dict(color='black', width=1)
+    ),
+    name='Daily Return'
+))
+
+fig6.add_vline(
+    x=mean_val,
+    line=dict(color='green', dash='dash', width=2),
+    annotation_text=f'Mean: {mean_val:.2f}%',
+    annotation_position='top'
+)
+
+fig6.update_layout(
+    title=dict(
+        text='Distribution of Daily Returns',
+        font=dict(size=16, family='Arial, sans-serif'),
+        x=0.5,
+        xanchor='center'
+    ),
+    xaxis_title='Daily Return (%)',
+    yaxis_title='Frequency',
+    width=1000,
+    height=500,
+    showlegend=True,
+    xaxis=dict(showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)'),
+    yaxis=dict(showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)')
+)
+
+st.plotly_chart(fig6, width="stretch")
 
 df['Year'] = df['Date'].apply(lambda x: x.year)
 df['Month'] = df['Date'].apply(lambda x: x.month)
