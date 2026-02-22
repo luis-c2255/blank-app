@@ -885,7 +885,7 @@ fig9.add_trace(go.Scatter(
     x=buy_signals['Date'],
     y=buy_signals['Close'],
     mode='markers',
-    marker=dict(color='green', symbol='triangle-up', size=10, line=dict(width=0)),
+    marker=dict(color='green', symbol='triangle-up', size=12, line=dict(width=0)),
     name='Buy Signal'
 ))
 
@@ -893,7 +893,7 @@ fig9.add_trace(go.Scatter(
     x=sell_signals['Date'],
     y=sell_signals['Close'],
     mode='markers',
-    marker=dict(color='red', symbol='triangle-down', size=10, line=dict(width=0)),
+    marker=dict(color='red', symbol='triangle-down', size=12, line=dict(width=0)),
     name='Sell Signal'
 ))
 
@@ -904,7 +904,6 @@ fig9.update_layout(
     showlegend=True,
     xaxis=dict(showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)'),
     yaxis=dict(showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)'),
-    plot_bgcolor='white'
 )
 st.plotly_chart(fig9, width="stretch")
 
