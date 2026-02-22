@@ -1165,10 +1165,12 @@ with col1:
     st.markdown(
         Components.insight_box(
             title="Assessments",
-            content=f"⚠️ Trend: BEARISH - Price below both moving averages"\n
-                    f"🟡 RSI (32.7): NEUTRAL - No extreme conditions"\n
-                    f"✅ MACD: BULLISH - MACD above signal line"\n
-                    f"🟡 Bollinger Bands: Price within normal range",
+            content=st.markdown("""
+                f"⚠️ Trend: BEARISH - Price below both moving averages"\n
+                f"🟡 RSI (32.7): NEUTRAL - No extreme conditions"\n
+                f"✅ MACD: BULLISH - MACD above signal line"\n
+                f"🟡 Bollinger Bands: Price within normal range"
+                """, unsafe_allow_html=True),
             box_type="info"
     ),
     unsafe_allow_html=True
