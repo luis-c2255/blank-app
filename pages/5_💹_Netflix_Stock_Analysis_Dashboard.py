@@ -1554,6 +1554,14 @@ st.markdown(
 st.markdown("---")
 st.markdown("# 📋 ACTION ITEMS:")
 
+# Current market position
+current_price = df['Close'].iloc[-1]
+ma30 = df['MA_30'].iloc[-1]
+ma90 = df['MA_90'].iloc[-1]
+current_rsi = df['RSI'].iloc[-1]
+current_macd = df['MACD'].iloc[-1]
+current_signal = df['Signal_Line'].iloc[-1]
+
 col1, col2, col3, col4 = st.columns(4)
 with col1:
     st.markdown(
