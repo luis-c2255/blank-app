@@ -69,32 +69,46 @@ st.markdown(
 
 with st.container():
     fig = go.Figure()
-    fig.add_trace(go.Scatter(
-        x=df['Date'], 
-        y=df['Close'], 
-        name='Close Price',
-        line=dict(color='#E50914', width=1.5)
-    ))
-    fig.add_trace(go.Scatter(
-        x=df['Date'],
-        y=df['MA_30'], 
-        name='30-Day MA',
-        line=dict(color='orange', dash='dash')
-    ))
-    fig.add_trace(go.Scatter(
-        x=df['Date'], 
-        y=df['MA_90'], 
-        name='90-Day MA',
-        line=dict(color='green', dash='dot')
-    ))
-                                
-    fig.update_layout(
-        title='Netflix Stock Price Over Time',
-        xaxis_title='Date',
-        yaxis_title='Price (USD)'
-    )
-    fig = apply_chart_theme(fig)
-    st.plotly_chart(fig, width='stretch', height=500)
+
+fig.add_trace(go.Scatter(
+    x=df['Date'],
+    y=df['Close'],
+    mode='lines',
+    name='Close Price',
+    line=dict(color='#E50914', width=1.5)
+))
+
+fig.add_trace(go.Scatter(
+    x=df['Date'],
+    y=df['MA_30'],
+    mode='lines',
+    name='30-Day MA',
+    line=dict(color='orange', dash='dash')
+))
+
+fig.add_trace(go.Scatter(
+    x=df['Date'],
+    y=df['MA_90'],
+    mode='lines',
+    name='90-Day MA',
+    line=dict(color='green', dash='dash')
+))
+
+fig.update_layout(
+    title=dict(
+        text='Netflix Stock Price Over Time',
+        font=dict(size=16, family='Arial, sans-serif')
+    ),
+    xaxis_title='Date',
+    yaxis_title='Price (USD)',
+    width=1400,
+    height=600,
+    showlegend=True,
+    xaxis=dict(showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)'),
+    yaxis=dict(showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)')
+)
+
+st.plotly_chart(fig, width='stretch', height=500)
 
 st.markdown("---")
 st.markdown(
@@ -668,7 +682,7 @@ with col3:
 
 st.markdown("---")
 st.markdown(
-    Components.section_header("Monthly Returns", "↩"),
+    Components.section_header("Monthly & Weekly Performance", "🔝"),
     unsafe_allow_html=True
 )
 data = {
