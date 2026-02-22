@@ -768,7 +768,7 @@ st.markdown(
 
 with st.container():
     # Select numeric columns
-corr_data = df[['Open', 'High', 'Low', 'Close', 'Volume', 'Daily_Return', 'Volatility_30']].corr()
+    corr_data = df[['Open', 'High', 'Low', 'Close', 'Volume', 'Daily_Return', 'Volatility_30']].corr()
 
 fig7 = go.Figure(data=go.Heatmap(
     z=corr_data.values,
