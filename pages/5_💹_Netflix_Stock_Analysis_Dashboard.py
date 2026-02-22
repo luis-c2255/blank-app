@@ -181,35 +181,32 @@ st.markdown(
 )
 with st.container():
     fig3 = go.Figure()
-    fig3.add_trace(go.Scatter(
-        x=df['Volume'],
-        y=df['Daily_Return'],
-        mode='markers',
-        marker=dict(
-            size=10,
-            color='steelblue',
-            opacity=0.3
-        ),
-        name='Data'
-    ))
-    fig3.add_hline(y=0, line=dict(color='red', dash='dash', width=1))
-    fig3.update_layout(
-        width=1000,
-        height=600,
-        xaxis_title=dict(text='Trading Volume', font=dict(size=12)),
-        yaxis_title=dict(text='Daily_Return (%)', font=dict(size=12)),
-        title=dict(
-            text='Volume vs. Daily Return Correlation', 
-            font=dict(size=16, family='Arial, sans-serif'), 
-            x=0.5, 
-            xanchor='center'
-        ),
-        xaxis=dict(showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)'),
-        yaxis=dict(showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)'),
-        plot_bgcolor='white',
-        showlegend=False
-    )
-    st.plotly_chart(fig3, width="stretch")
+
+fig3.add_trace(go.Scatter(
+    x=df['Volume'],
+    y=df['Daily_Return'],
+    mode='markers',
+    marker=dict(
+        size=10,
+        color='steelblue',
+        opacity=0.3
+    ),
+    name=''
+))
+
+fig3.add_hline(y=0, line_color='red', line_dash='dash', line_width=1)
+
+fig3.update_layout(
+    width=1000,
+    height=600,
+    xaxis_title=dict(text='Trading Volume', font=dict(size=12)),
+    yaxis_title=dict(text='Daily Return (%)', font=dict(size=12)),
+    title=dict(text='Volume vs. Daily Return Correlation', font=dict(size=16, family='Arial, sans-serif'), x=0.5, xanchor='center'),
+    xaxis=dict(showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)'),
+    yaxis=dict(showgrid=True, gridcolor='rgba(128, 128, 128, 0.3)'),
+    showlegend=False
+)
+st.plotly_chart(fig3, width="stretch")
 
 st.markdown("---")
 st.markdown(
