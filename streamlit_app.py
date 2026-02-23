@@ -109,7 +109,7 @@ cards = [
 ]
 
 # --- Responsive grid ---
-cols = st.columns(2, grap="large")
+cols = st.columns(2, gap="large")
 
 for i, card in enumerate(cards):
     with cols[i % 2]:
