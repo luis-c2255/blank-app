@@ -79,32 +79,32 @@ cards = [
     {
         "title": "Employee Dashboard",
         "image": "utils/employee.png",
-        "page": "pages/01_🎯_Employee_Analytics_Dashboard.py"
+        "page": "pages/1_🎯_Employee_Analytics_Dashboard.py"
     },
         {
         "title": "Sales Performance",
         "image": "utils/sales.png",
-        "page": "pages/02_📊_Sales_Performance_Dashboard.py"
+        "page": "pages/2_📊_Sales_Performance_Dashboard.py"
     },
         {
         "title": "Healthcare Symptoms",
         "image": "utils/healthcare.png",
-        "page": "pages/03_🏥_Healthcare_Symptoms_Analytics_Dashboard.py"
+        "page": "pages/3_🏥_Healthcare_Symptoms_Analytics_Dashboard.py"
     },
         {
         "title": "Weather Analysis",
         "image": "utils/weather.png",
-        "page": "pages/04_🌤️_Madrid_Daily_Weather_Analysis_Dashboard.py"
+        "page": "pages/4_🌤️_Madrid_Daily_Weather_Analysis_Dashboard.py"
     },
         {
         "title": "Stock Analysis",
         "image": "utils/stocks.png",
-        "page": "pages/05_💹_Netflix_Stock_Analysis_Dashboard.py"
+        "page": "pages/5_💹_Netflix_Stock_Analysis_Dashboard.py"
     },
         {
         "title": "Retail Inventor",
         "image": "utils/retail.png",
-        "page": "pages/06_📦_Retail_Inventory_Analysis_Dashboard.py"
+        "page": "pages/6_📦_Retail_Inventory_Analysis_Dashboard.py"
     }
 ]
 
