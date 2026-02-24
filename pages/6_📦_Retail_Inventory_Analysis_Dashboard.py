@@ -291,7 +291,7 @@ with col1:
         color_discrete_map={'No Promotion': '#ff7f0e', 'With Promotion': '#2ca02c'},
         title='Average Units Sold')  
     fig5.update_layout(height=300, showlegend=False)
-    st.plotly_chart(fig5, use_container_width=True)
+    st.plotly_chart(fig5, width="stretch")
 
 with col2:
     fig6 = px.bar(
