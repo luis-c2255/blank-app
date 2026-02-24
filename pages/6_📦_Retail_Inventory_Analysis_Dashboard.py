@@ -454,7 +454,7 @@ with st.container():
     )
     fig_bar3.update_layout(height=400)
     st.plotly_chart(fig_bar3, width="stretch")
-    
+
 st.markdown("---") 
 
 with st.container():
@@ -464,13 +464,13 @@ with st.container():
         x='Category',
         y='Stock_to_Sales_Ratio',
         color='Category',
-        color_continuous_scale='tealgrn')
+        color_discrete_sequence=px.colors.sequential.Tealgrn)
     fig_stock.update_traces(texttemplate='%{text:.2f}', textposition='inside')
     fig_stock.add_hline(y=1.5, line_dash='dash', line_color='green',
     annotation_text='Optimal Min (1.5x)')
     fig_stock.add_hline(y=2.0, line_dash='dash', line_color='red',
     annotation_text='Optimal Max (2.0x)')
-    st.plotly_chart(fig_stock, width="stretch", height=600) 
+    st.plotly_chart(fig_stock, width="stretch") 
 
 st.markdown("---") 
 st.markdown(
