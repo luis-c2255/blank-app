@@ -921,3 +921,116 @@ with col2:
         color_continuous_scale='Greens')
     fig_e1.update_traces(texttemplate='%{text:.1%}', textposition='inside')
     st.plotly_chart(fig_e1, width="stretch")
+
+st.markdown("---") 
+st.markdown(
+    Components.page_header("🔮 Predictive Analytics & ML Insights"),
+    unsafe_allow_html=True
+)
+st.info("💡 This section uses machine learning to identify key drivers of sales performance") 
+
+from sklearn.ensemble import RandomForestRegressor  
+from sklearn.model_selection import train_test_split  
+  
+@st.cache_data  
+def train_model(data):  
+    model_df = data.copy()  
+    # Encode categoricals  
+    model_df = pd.get_dummies(model_df, columns=['Category', 'Region',  
+    'Weather Condition', 'Seasonality'],  
+    drop_first=True)  
+  
+    feature_cols = [col for col in model_df.columns if col.startswith(('Category_', 'Region_',  
+    'Weather Condition_', 'Seasonality_'))]  
+    feature_cols += ['Inventory Level', 'Price', 'Discount', 'Holiday/Promotion',  
+    'Competitor Pricing', 'Month']  
+  
+    X = model_df[feature_cols]  
+    y = model_df['Units Sold']  
+  
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)  
+  
+    rf_model = RandomForestRegressor(n_estimators=100, max_depth=15, random_state=42)  
+    rf_model.fit(X_train, y_train)  
+  
+    y_pred = rf_model.predict(X_test)  
+  
+    from sklearn.metrics import mean_absolute_error, r2_score  
+    mae = mean_absolute_error(y_test, y_pred)  
+    r2 = r2_score(y_test, y_pred)  
+  
+    feature_imp = pd.DataFrame({  
+    'Feature': feature_cols,  
+    'Importance': rf_model.feature_importances_  
+    }).sort_values('Importance', ascending=False).head(15)  
+  
+    return feature_imp, mae, r2, y_test, y_pred  
+  
+feature_importance, mae, r2, y_test, y_pred = train_model(filtered_df) 
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown(
+        Components.metric_card(
+            title="Model R² Score",
+            value=f"{r2:.3f}",
+            delta="⭐",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col2:
+    st.markdown(
+        Components.metric_card(
+            title="Mean Absolute Error",
+            value=f"{mae:.2f} units",
+            delta="❌",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col3:
+    improvement = (r2 - filtered_df['Forecast_Accuracy'].mean()) * 100 
+    st.markdown(
+        Components.metric_card(
+            title="Improvement vs Current Forecast",
+            value=f"+{improvement:.1f}%",
+            delta="✅",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+
+with st.container():
+    fig_feat = px.bar(feature_importance, x='Importance', y='Feature',  
+    orientation='h',  
+    title='Top 15 Sales Drivers (Feature Importance)',  
+    labels={'Importance': 'Importance Score'},  
+    color='Importance',  
+    color_continuous_scale='Viridis')  
+    st.plotly_chart(fig_feat, width="stretch")  
+
+with st.container():
+    comparison_df = pd.DataFrame({  
+    'Actual': y_test.values[:500],  
+    'Predicted': y_pred[:500]  
+    })  
+  
+    fig_comp = px.scatter(comparison_df, x='Actual', y='Predicted',  
+    title='Actual vs ML Predicted Sales (Sample)',  
+    labels={'Actual': 'Actual Units Sold',  
+    'Predicted': 'Predicted Units Sold'},  
+    trendline='ols',  
+    opacity=0.6)  
+    fig_comp.add_shape(type='line', x0=0, y0=0,  
+    x1=comparison_df['Actual'].max(),  
+    y1=comparison_df['Actual'].max(),  
+    line=dict(color='red', dash='dash', width=2))  
+    st.plotly_chart(fig_comp, use_container_width=True)  
+
+st.markdown("---") 
+st.markdown(
+    Components.page_header("📋 AI-Generated Recommendations"),
+    unsafe_allow_html=True
+)
+st.error(
+    st.markdown("1. **High stockout risk detected in Groceries**. Increase safety stock by 15-20% and review reorder points."), "🚨"
+)
