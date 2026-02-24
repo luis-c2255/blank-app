@@ -889,7 +889,7 @@ st.markdown(
     Components.section_header("Environmental Factors Impact", "⛅"),
     unsafe_allow_html=True
 )
-col1, col2 = st-columns(2)
+col1, col2 = st.columns(2)
 with col1:
     weather_forecast = filtered_df.groupby('Weather Condition').agg({
         'Forecast_Accuracy': 'mean',
