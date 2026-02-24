@@ -1,11 +1,26 @@
 import streamlit as st
 import sys
 import os
+from utils.theme import Components, Colors, apply_chart_theme, init_page
+import base64
 
 st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+# --- Helper to load images as base64 ---
+def load_base64(path):
+    with open(path, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
+# --- Load images ---
+img_employee = load_base64("utils/employee.png")
+img_sales = load_base64("utils/sales.png")
+img_health = load_base64("utils/healthcare.png")
+img_weather = load_base64("utils/weather.png")
+img_stock = load_base64("utils/stocks.png")
+img_retail = load_base64("utils/retail.png")
+
 
 st.markdown("""
     <style>
@@ -73,52 +88,29 @@ except FileNotFoundError:
     st.warning("Custom CSS file not found. Using default styling.")
 
 
-st.title("Multiple Analysis Dashboard")
+st.markdown(
+    Components.page_header("📊 Multiple Analysis Dashboard"), unsafe_allow_html=True)
 
 cards = [
-    {
-        "title": "Employee Dashboard",
-        "image": "utils/employee.png",
-        "page": "pages/1_🎯_Employee_Analytics_Dashboard.py"
-    },
-        {
-        "title": "Sales Performance",
-        "image": "utils/sales.png",
-        "page": "pages/2_📊_Sales_Performance_Dashboard.py"
-    },
-        {
-        "title": "Healthcare Symptoms",
-        "image": "utils/healthcare.png",
-        "page": "pages/3_🏥_Healthcare_Symptoms_Analytics_Dashboard.py"
-    },
-        {
-        "title": "Weather Analysis",
-        "image": "utils/weather.png",
-        "page": "pages/4_🌤️_Madrid_Daily_Weather_Analysis_Dashboard.py"
-    },
-        {
-        "title": "Stock Analysis",
-        "image": "utils/stocks.png",
-        "page": "pages/5_💹_Netflix_Stock_Analysis_Dashboard.py"
-    },
-        {
-        "title": "Retail Inventor",
-        "image": "utils/retail.png",
-        "page": "pages/6_📦_Retail_Inventory_Analysis_Dashboard.py"
-    }
+    ("Employee Dashboard", img_employee, "pages/1_🎯_Employee_Analytics_Dashboard.py"),
+    ("Sales Performance", img_sales, "pages/2_📊_Sales_Performance_Dashboard.py"),
+    ("Healthcare Symptoms", img_health, "pages/3_🏥_Healthcare_Symptoms_Analytics_Dashboard.py"),
+    ("Weather Analysis", img_weather, "pages/4_🌤️_Madrid_Daily_Weather_Analysis_Dashboard.py"),
+    ("Stock Analysis", img_stock, "pages/5_💹_Netflix_Stock_Analysis_Dashboard.py"),
+    ("Retail Inventory", img_retail, "pages/6_📦_Retail_Inventory_Analysis_Dashboard.py"),
 ]
 
 # --- Responsive grid ---
 cols = st.columns(2, gap="large")
 
-for i, card in enumerate(cards):
+for i, (title, img, page) in enumerate(cards):
     with cols[i % 2]:
         st.page_link(
-            card["page"],
+            page,
             label=f"""
             <div class="card">
-            <img src="{card['image']}" />
-            <div class="card-title">{card['title']}</div>
+            <img src="data:image/png;base64, {img}" />
+            <div class="card-title">{title}</div>
             </div>
             """, width="stretch"
         )
