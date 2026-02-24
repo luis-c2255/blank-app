@@ -33,7 +33,7 @@ st.markdown("""
             color: white !important;
             font-weight: bold;
         }
-        .card { 
+        .stLinkButton { 
         border-radius: 18px; padding: 0; overflow: hidden; 
         background: rgba(255, 255, 255, 0.10); 
         backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.25); 
@@ -41,12 +41,12 @@ st.markdown("""
         transition: transform 0.25s ease, 
         box-shadow 0.25s ease, border-color 0.25s ease; cursor: pointer; 
         }
-        .card:hover { 
+        .stLinkButton:hover { 
         transform: translateY(-6px) scale(1.02); 
         box-shadow: 0 10px 28px rgba(0,0,0,0.35); 
         border-color: rgba(0, 200, 255, 0.55); /* subtle cyan glow */ 
         } 
-        .card-title { 
+        .stLinkButton-title { 
         padding: 14px; font-size: 1.15rem; 
         font-weight: 600; text-align: center; 
         color: white; 
