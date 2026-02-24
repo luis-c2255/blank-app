@@ -1157,9 +1157,9 @@ with col1:
             "THIS WEEK:",
             """
             <ul style="margin: 0; padding-left: 20px;">
-                <li>1. Address 2585 products at stockout risk</li>
-                <li>2. Review 35039 overstocked items for clearance</li>
-                <li>3. Share insights with store managers in East region</li>
+                <li>Address 2585 products at stockout risk</li>
+                <li>Review 35039 overstocked items for clearance</li>
+                <li>Share insights with store managers in East region</li>
             </ul>
             """,
             "success"
@@ -1173,9 +1173,9 @@ with col2:
             "THIS MONTH:",
             """
             <ul style="margin: 0; padding-left: 20px;">
-                <li>4. Implement ML forecasting model (potential -736.9% improvement)</li>
-                <li>5. Launch targeted promotions in low-performing seasons</li>
-                <li>6. Optimize pricing strategy based on competitor analysis</li>
+                <li>Implement ML forecasting model (potential -736.9% improvement)</li>
+                <li>Launch targeted promotions in low-performing seasons</li>
+                <li>Optimize pricing strategy based on competitor analysis</li>
             </ul>
             """,
             "info"
@@ -1189,10 +1189,10 @@ with col3:
             "THIS QUARTER:",
             """
             <ul style="margin: 0; padding-left: 20px;">
-                <li>7. Deploy real-time monitoring dashboard</li>
-                <li>8. Automate daily inventory alerts</li>
-                <li>9. Conduct A/B tests on promotional strategies</li>
-                <li>10. Train team on data-driven decision making</li>
+                <li>Deploy real-time monitoring dashboard</li>
+                <li>Automate daily inventory alerts</li>
+                <li>Conduct A/B tests on promotional strategies</li>
+                <li>Train team on data-driven decision making</li>
             </ul>
             """,
             "warning"
