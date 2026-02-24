@@ -119,7 +119,7 @@ div[data-testid="stMetricValue"] {
 
 /* Expander */
 .streamlit-expanderHeader {
-    background-color: #1E1E1E;
+    background-color: rgba(76, 201, 166, 0.15);
     border-radius: 5px;
 }
 
