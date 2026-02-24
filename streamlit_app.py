@@ -58,7 +58,7 @@ st.markdown(
     Components.page_header("📊 Multiple Analysis Dashboard"), unsafe_allow_html=True)
 
 with st.container(border=True):    
-    st.image("img.svg", width="stretch")
+    st.image("img.svg", width="stretch", height=350)
 
 col1, col2, col3 = st.columns(3)
 with col1:
