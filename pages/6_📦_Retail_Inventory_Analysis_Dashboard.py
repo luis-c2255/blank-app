@@ -467,14 +467,14 @@ with st.container():
         stock_ratio,
         x='Category',
         y='Stock_to_Sales_Ratio',
-        color_continuous_scale='RdYlGn_r')
+        color_continuous_scale=Colors.CHART_COLORS)
     fig_stock.update_traces(texttemplate='%{text:.2f}', textposition='outside')
     fig_stock.add_hline(y=1.5, line_dash='dash', line_color='green',
     annotation_text='Optimal Min (1.5x)')
     fig_stock.add_hline(y=2.0, line_dash='dash', line_color='red',
     annotation_text='Optimal Max (2.0x)')
     st.plotly_chart(fig_stock, width="stretch") 
-    
+
 st.markdown("---") 
 col1, col2 = st.columns(2)
 with col1:
