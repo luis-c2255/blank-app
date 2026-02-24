@@ -462,24 +462,20 @@ st.markdown(
 )
 
 with st.container():
-    inventory_summary = filtered_df.groupby(['Category', 'Region']).agg({  
-    'Stockout_Risk': 'sum',  
-    'Overstock_Risk': 'sum',  
-    'Stock_to_Sales_Ratio': 'mean'  
-    }).reset_index()  
-
-    fig_sum = px.scatter(inventory_summary,  
-    x='Stockout_Risk',  
-    y='Overstock_Risk',  
-    size='Stock_to_Sales_Ratio',  
-    color='Category',  
-    hover_data=['Region'],  
-    title='Inventory Risk Matrix',  
-    labels={'Stockout_Risk': 'Stockout Occurrences',  
-    'Overstock_Risk': 'Overstock Occurrences'})  
-    fig_sum = apply_chart_theme(fig_sum)
-    st.plotly_chart(fig_sum, width="stretch")  
-
+    stock_ratio = filtered_df.groupby('Category')['Stock_to_Sales_Ratio'].mean().reset_index()
+    fig_stock = px.bar(
+        stock_ratio,
+        x='Category',
+        y='Stock_to_Sales_Ratio',
+        color_continuous_scale='RdYlGn_r')
+    fig_stock.update_traces(texttemplate='%{text:.2f}', textposition='outside')
+    fig_stock.add_hline(y=1.5, line_dash='dash', line_color='green',
+    annotation_text='Optimal Min (1.5x)')
+    fig_stock.add_hline(y=2.0, line_dash='dash', line_color='red',
+    annotation_text='Optimal Max (2.0x)')
+    st.plotly_chart(fig_stock, width="stretch") 
+    
+st.markdown("---") 
 col1, col2 = st.columns(2)
 with col1:
     st.markdown("### 🚨 High Stockout Risk")
