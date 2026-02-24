@@ -1032,3 +1032,8 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.error("1. High stockout risk detected in Groceries. Increase safety stock by 15-20% and review reorder points.", icon="🚨")
+st.error("2. Overstock detected in Clothing. Consider promotions or discounts to clear excess inventory.", icon="📦")
+st.success("3. Promotions are highly effective (avg lift: -0.1%). Increase promotional frequency in low-performing regions.", icon="🎉")
+st.warning("4. Only 50.0% of products priced below competitors. Review pricing strategy to improve competitiveness.", icon="💰")
+st.info("5. Current forecast accuracy is 85.4%. Implement ML model to improve to 33.8%.", icon="🎯")
+st.success("6. Winter is your strongest season. Plan inventory buildup 4-6 weeks in advance.", icon="🌟")
