@@ -787,6 +787,7 @@ with st.container():
         'Revenue': 'mean'
     }).reset_index()
     discount_analysis = discount_analysis.dropna()
+    discount_analysis['Discount_Range'] = discount_analysis['Discount_Range'].astype(str)
 
     fig_disc = px.line(discount_analysis, x='Discount_Range', y=['Units Sold', 'Revenue'],  
     title='Discount Range Impact on Sales & Revenue',  
