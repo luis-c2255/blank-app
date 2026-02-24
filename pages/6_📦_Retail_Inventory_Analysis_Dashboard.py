@@ -473,7 +473,7 @@ with st.container():
     fig_stock.add_hline(y=1.5, line_dash='dash', line_color='green',
     annotation_text='Optimal Min (1.5x)')
     fig_stock.add_hline(y=2.0, line_dash='dash', line_color='red',
-    annotation_text='Optimal Max (2.0x)', color='black')
+    annotation_text='Optimal Max (2.0x)', text_color='black')
     st.plotly_chart(fig_stock, width="stretch", height=600) 
 
 st.markdown("---") 
