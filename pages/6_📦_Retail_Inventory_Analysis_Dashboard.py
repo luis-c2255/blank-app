@@ -1105,5 +1105,5 @@ st.markdown(
 )
 
 st.markdown("""
-:red[### 1. REVENUE & SALES]""")
+    :red[REVENUE & SALES]""")
 col1, col2, col3, col4 = st.columns() 
