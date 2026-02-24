@@ -1144,3 +1144,58 @@ with st.expander("6. MODEL PERFORMANCE"):
     - **Model beats baseline by**: -736.91% 
     """)
 
+
+st.markdown("---") 
+st.markdown(
+    Components.page_header("💡 IMMEDIATE ACTION ITEMS"),
+    unsafe_allow_html=True
+)
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.markdown(
+        Components.insight_box(
+            "THIS WEEK:",
+            """
+            <ul style="margin: 0; padding-left: 20px;">
+                <li>1. ⚠️ Address 2585 products at stockout risk</li>
+                <li>2. 📊 Review 35039 overstocked items for clearance</li>
+                <li>3. 📧 Share insights with store managers in East region</li>
+            </ul>
+            """,
+            "success"
+        ),
+        unsafe_allow_html=True
+    )
+
+with col2:
+    st.markdown(
+        Components.insight_box(
+            "THIS MONTH:",
+            """
+            <ul style="margin: 0; padding-left: 20px;">
+                <li>4. 🤖 Implement ML forecasting model (potential -736.9% improvement)</li>
+                <li>5. 🎯 Launch targeted promotions in low-performing seasons</li>
+                <li>6. 💰 Optimize pricing strategy based on competitor analysis</li>
+            </ul>
+            """,
+            "info"
+        ),
+        unsafe_allow_html=True
+    )
+
+with col3:
+    st.markdown(
+        Components.insight_box(
+            "THIS QUARTER:",
+            """
+            <ul style="margin: 0; padding-left: 20px;">
+                <li>7. 📊 Deploy real-time monitoring dashboard</li>
+                <li>8. 🔄 Automate daily inventory alerts</li>
+                <li>9. 📈 Conduct A/B tests on promotional strategies</li>
+                <li>10. 🎓 Train team on data-driven decision making</li>
+            </ul>
+            """,
+            "warning"
+        ),
+        unsafe_allow_html=True
+    )
