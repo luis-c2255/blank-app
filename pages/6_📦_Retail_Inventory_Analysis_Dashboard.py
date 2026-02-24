@@ -141,7 +141,7 @@ with col1:
             title="Total Revenue",
             value=f"${total_revenue:,.0f}",
             delta="💵",
-            card_type="info"
+            card_type="success"
         ), unsafe_allow_html=True
     )
 with col2:
@@ -151,7 +151,7 @@ with col2:
             title="Total Units Sold",
             value=f"{total_sales:,.0f}",
             delta="📦",
-            card_type="info"
+            card_type="success"
         ), unsafe_allow_html=True
     )
 with col3:
@@ -181,7 +181,7 @@ with col5:
             title="Forecast Error",
             value=f"{avg_forecast_error:.1f}%",
             delta="🎯",
-            card_type="info"
+            card_type="error"
         ), unsafe_allow_html=True
     )
 st.markdown("---") 
@@ -331,7 +331,7 @@ with col1:
             title="High Stockout Risk",
             value=f"{high_risk_count:,}",
             delta=f"{(high_risk_count/len(filtered_df)*100):.1f}%",
-            card_type="info"
+            card_type="warning"
         ), unsafe_allow_html=True
     )
 with col2:
@@ -341,7 +341,7 @@ with col2:
             title="Overstock Items",
             value=f"{overstock_count:,}",
             delta=f"{(overstock_count/len(filtered_df)*100):.1f}%",
-            card_type="info"
+            card_type="success"
         ), unsafe_allow_html=True
     )
 with col3:
@@ -351,7 +351,7 @@ with col3:
             title="Avg Stock Coverage",
             value=f"{avg_coverage:.1f} days",
             delta="⏱️",
-            card_type="info"
+            card_type="warning"
         ), unsafe_allow_html=True
     )
 with col4:
@@ -361,7 +361,7 @@ with col4:
             title="Total Inventory Value",
             value=f"${total_inventory_value:,.0f}",
             delta="💵",
-            card_type="info"
+            card_type="success"
         ), unsafe_allow_html=True
     )
 st.markdown("---") 
@@ -515,7 +515,7 @@ with col1:
             title="Total Revenue",
             value=f"${total_revenue:,.0f}",
             delta="💰",
-            card_type="info"
+            card_type="success"
         ), unsafe_allow_html=True
     )
 with col2:
@@ -533,7 +533,7 @@ with col3:
             title="Top Category",
             value=f"{best_category}",
             delta="🏆",
-            card_type="info"
+            card_type="success"
         ), unsafe_allow_html=True
     )
 with col4:
@@ -542,6 +542,133 @@ with col4:
             title="Growth Rate",
             value=f"{growth_rate:.1f}%",
             delta=f"{growth_rate:.1f}%",
-            card_type="info"
+            card_type="error"
         ), unsafe_allow_html=True
     )
+
+st.markdown("---") 
+st.markdown(
+    Components.section_header("Sales & Revenue Trends", "📈"),
+    unsafe_allow_html=True
+)
+trend_option = st.radio(
+    "Select Aggregation",
+    ['Daily', 'Weekly', 'Monthly'],
+    horizontal=True
+)
+
+if trend_option == 'Daily':
+    trend_data = filtered_df.groupby('Date').agg({
+        'Units Sold': 'sum',
+        'Revenue': 'sum'
+    }).reset_index()
+    x_col = 'Date'
+elif trend_option == 'Weekly':
+    filtered_df['Weekly'] = filtered_df['Date'].dt.to_period('W').astype(str)
+    trend_data = filtered_df.groupby('Week').agg({
+        'Units Sold': 'sum',
+        'Revenue': 'sum'
+    }).reset_index()
+    x_col = 'Week'
+else:
+    filtered_df['Year_Month'] = filtered_df['Date'].dt.to_period('M').astype(str)
+    trend_data = filtered_df.groupby('Year_Month').agg({
+        'Units Sold': 'sum',
+        'Revenue': 'sum'
+    }).reset_index()
+    x_col = 'Year_Month'
+
+    fig_trend = make_subplots(specs=[[{'secondary_y': True}]])
+
+    fig_trend.add_trace(
+        go.Scatter(
+            x=trend_data[x_col],
+            y=trend_data['Units Sold'],
+            name='Units Sold',
+            line=dict(color='#1f77b4', width=2),
+            mode='lines+markers'
+        ), secondary_y=False
+    )
+    fig_trend.update_xaxes(title_text='Period')
+    fig_trend.update_yaxes(title_text='Units Sold', secondary_y=False)
+    fig_trend.update_yaxes(title_text='Revenue ($)', secondary_y=True)
+    fig_trend.update_layout(height=400, hovermode='x unified')
+
+    st.plotly_chart(fig_trend, width="stretch")
+
+st.markdown("---")
+col1, col2 = st.columns(2)
+with col1:
+    st.markdown("### 📦 Sales by Category")
+    category_sales = filtered_df.groupby('Category').agg({
+        'Units Sold': 'sum',
+        'Revenue': 'sum'
+    }).reset_index().sort_values('Revenue', ascending=False)
+
+    fig_cat = px.bar(
+        category_sales,
+        x='Category',
+        y=['Units Sold', 'Revenue'],
+        barmode='group',
+        color_discrete_sequence=['#1f77b4', '#2ca02c'],
+        labels={'value': 'Amount', 'variable': 'Metric'}
+    )
+    fig_cat.update_layout(height=400)
+    st.plotly_chart(fig_cat, width="stretch")
+
+with col2:
+    st.markdown("### 🗺️ Sales by Region")
+    regional_sales = filtered_df.groupby('Region').agg({
+        'Units Sold': 'sum',
+        'Revenue': 'sum'
+    }).reset_index()
+
+    fig_reg = px.scatter(
+        regional_sales,
+        x='Units Sold',
+        y='Revenue',
+        size='Revenue',
+        color='Region',
+        text='Region',
+        size_max=60,
+        color_discrete_sequence=px.colors.qualitative.Set2
+    )
+    fig_reg.update_traces(textposition='top center')
+    fig_reg.update_layout(height=400)
+    st.plotly_chart(fig_reg, width="stretch")
+
+
+st.markdown("---") 
+st.markdown(
+    Components.section_header("Seasonality & Day of Week Analysis", "🍂"),
+    unsafe_allow_html=True
+)
+with st.container():
+    seasonal_data = filtered_df.groupby('Seasonality').agg({  
+    'Units Sold': 'sum',  
+    'Revenue': 'sum'  
+    }).reset_index()  
+  
+    # Order seasons  
+    season_order = ['Spring', 'Summer', 'Autumn', 'Winter']  
+    seasonal_data['Seasonality'] = pd.Categorical(  
+    seasonal_data['Seasonality'],  
+    categories=season_order,  
+    ordered=True  
+    )  
+    seasonal_data = seasonal_data.sort_values('Seasonality') 
+    fig_seas = go.Figure()  
+    fig_seas.add_trace(go.Bar(  
+    x=seasonal_data['Seasonality'],  
+    y=seasonal_data['Units Sold'],  
+    name='Units Sold',  
+    marker_color='#8dd3c7'  
+    ))  
+    fig_seas.add_trace(go.Bar(  
+    x=seasonal_data['Seasonality'],  
+    y=seasonal_data['Revenue'] / 100, # Scale for visibility  
+    name='Revenue (÷100)',  
+    marker_color='#fb8072'  
+    ))  
+    fig_seas.update_layout(barmode='group', height=400, title="Seasonal Performance")  
+    st.plotly_chart(fig_seas, width="stretch") 
