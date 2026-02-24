@@ -2,26 +2,62 @@ import streamlit as st
 import sys
 import os
 from utils.theme import Components, Colors, apply_chart_theme, init_page
-import base64
+
 
 st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-# --- Helper to load images as base64 ---
-def load_base64(path):
-    with open(path, "rb") as f:
-        return base64.b64encode(f.read()).decode()
-
-# --- Load images ---
-img_employee = load_base64("utils/employee.png")
-img_sales = load_base64("utils/sales.png")
-img_health = load_base64("utils/healthcare.png")
-img_weather = load_base64("utils/weather.png")
-img_stock = load_base64("utils/stocks.png")
-img_retail = load_base64("utils/retail.png")
-
-
+pages = [
+    {
+        "title": "Employee Analytics",
+        "emoji": "🎯",
+        "description": "Workforce insights, HR metrics & team performance",
+        "path": "pages/1_🎯_Employee_Analytics_Dashboard.py",
+        "color": "#4F46E5",
+        "bg": "#EEF2FF",
+    },
+    {
+        "title": "Sales Performance",
+        "emoji": "📊",
+        "description": "Revenue trends, pipeline & sales KPIs",
+        "path": "pages/2_📊_Sales_Performance_Dashboard.py",
+        "color": "#059669",
+        "bg": "#ECFDF5",
+    },
+    {
+        "title": "Healthcare Symptoms",
+        "emoji": "🏥",
+        "description": "Patient data, symptom patterns & health analytics",
+        "path": "pages/3_🏥_Healthcare_Symptoms_Analytics_Dashboard.py",
+        "color": "#DC2626",
+        "bg": "#FEF2F2",
+    },
+    {
+        "title": "Madrid Weather",
+        "emoji": "🌤️",
+        "description": "Daily weather patterns & climate analysis for Madrid",
+        "path": "pages/4_🌤️_Madrid_Daily_Weather_Analysis_Dashboard.py",
+        "color": "#D97706",
+        "bg": "#FFFBEB",
+    },
+    {
+        "title": "Netflix Stock",
+        "emoji": "💹",
+        "description": "Stock price history, trends & financial metrics",
+        "path": "pages/5_💹_Netflix_Stock_Analysis_Dashboard.py",
+        "color": "#E50914",
+        "bg": "#FFF1F2",
+    },
+    {
+        "title": "Retail Inventory",
+        "emoji": "📦",
+        "description": "Stock levels, turnover rates & supply chain insights",
+        "path": "pages/6_📦_Retail_Inventory_Analysis_Dashboard.py",
+        "color": "#7C3AED",
+        "bg": "#F5F3FF",
+    },
+]
 st.markdown("""
     <style>
         /* Stylize the search input */
@@ -48,37 +84,72 @@ st.markdown("""
             color: white !important;
             font-weight: bold;
         }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
         .card {
-            border-radius: 18px;
-            padding: 0;
+            border-radius: 16px;
+            padding: 2rem;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            border: 1.5px solid transparent;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            position: relative;
             overflow: hidden;
-            background: rgba(255, 255, 255, 0.10);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-            transition: transform 0.25 ease, box-shadow 0.25 ease, border-color 0.25 ease;
             cursor: pointer;
         }
         .card:hover {
-            transform: translateY(-6px) scale(1.02);
-            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
-            border-color: rgba(0, 200, 255, 0.55);
-        }
-        .card img {
-            width: 100%;
-            height: 170px;
-            object-fit: cover;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
         }
         .card-title  {
-            padding: 14px;
-            font-size: 1.15rem;
-            font-weight: 600;
-            text-align: center;
-            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        .card-desc {
+            font-size: 0.875rem;
+            margin: 0;
+            opacity: 0.75;
+            line-height: 1.5;
+        }
+        .card-arrow {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.25rem;
+            opacity: 0.4;
+            transition: opacity 0.2s, right 0.2s;
+        }
+        .card:hover .card-arrow {
+            opacity: 0.9;
+            right: 1.25rem;
         }
     </style>
 """, unsafe_allow_html=True)
+
+st.markdown(
+    Components.page_header("📊 Multiple Analysis Dashboard"), unsafe_allow_html=True)
+    
+card_html = '<div class="card-grid">'
+for page in pages:
+    cards_html += f"""
+    <a class="card" href="{page['path'].replace('pages/', '').replace('.py', '').replace(' ', '_')}"
+        style="background-color: {page['bg']}; color: {page['color']}; border-color: {page['color']}22;">
+        <span class="card-emoji">{page['emoji']}</span>
+        <p class="card-title">{page['title']}</p>
+        <p class="card-desc">{page['description']}</p>
+        <span class="card-arrow">→</span>
+    </a>
+    """
+cards_html += '</div>'
+
+st.markdown(cards_html, unsafe_allow_html=True)
 
 # Load custom CSS
 try:
@@ -87,33 +158,6 @@ try:
 except FileNotFoundError:
     st.warning("Custom CSS file not found. Using default styling.")
 
-
-st.markdown(
-    Components.page_header("📊 Multiple Analysis Dashboard"), unsafe_allow_html=True)
-
-cards = [
-    ("Employee Dashboard", img_employee, "pages/1_🎯_Employee_Analytics_Dashboard.py"),
-    ("Sales Performance", img_sales, "pages/2_📊_Sales_Performance_Dashboard.py"),
-    ("Healthcare Symptoms", img_health, "pages/3_🏥_Healthcare_Symptoms_Analytics_Dashboard.py"),
-    ("Weather Analysis", img_weather, "pages/4_🌤️_Madrid_Daily_Weather_Analysis_Dashboard.py"),
-    ("Stock Analysis", img_stock, "pages/5_💹_Netflix_Stock_Analysis_Dashboard.py"),
-    ("Retail Inventory", img_retail, "pages/6_📦_Retail_Inventory_Analysis_Dashboard.py"),
-]
-
-# --- Responsive grid ---
-cols = st.columns(2, gap="large")
-
-for i, (title, img, page) in enumerate(cards):
-    with cols[i % 2]:
-        st.page_link(
-            page,
-            label=f"""
-            <div class="card">
-            <img src="data:image/png;base64, {img}" />
-            <div class="card-title">{title}</div>
-            </div>
-            """, width="stretch"
-        )
 # ============================================
 # FOOTER
 # ============================================
