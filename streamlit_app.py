@@ -39,6 +39,7 @@ st.markdown("""
 st.markdown(
     Components.page_header("📊 Multiple Analysis Dashboard"), unsafe_allow_html=True)
     
+st.image("image.svg", width="stretch")
 
 # Load custom CSS
 try:
