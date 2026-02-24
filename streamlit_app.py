@@ -41,6 +41,8 @@ st.markdown(
     
 st.image("image.svg", width="stretch")
 
+st.link_button("Page 1", "https://blank-app-ssh25yo5mc.streamlit.app/Employee_Analytics_Dashboard")
+
 # Load custom CSS
 try:
     with open('style.css') as f:
