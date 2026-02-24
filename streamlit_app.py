@@ -40,43 +40,43 @@ st.markdown(
     Components.page_header("📊 Multiple Analysis Dashboard"), unsafe_allow_html=True)
 
 with st.container(border=True, height=350):    
-    st.image("image.svg", width="stretch")
+    st.image("image.svg", width="content")
 
 col1, col2, col3 = st.columns(3)
 with col1:
     st.link_button("Employee Analytics Dashboard", 
     "https://blank-app-ssh25yo5mc.streamlit.app/Employee_Analytics_Dashboard",
-    type=primary,  icon="🎯", icon_position="left", width="stretch"
+    type="primary",  icon="🎯", icon_position="left", width="stretch"
     )
 
 with col2:
     st.link_button("Sales Performance Dashboard", 
     "https://blank-app-ssh25yo5mc.streamlit.app/Sales_Performance_Dashboard",
-    type=primary,  icon="📊", icon_position="left", width="stretch"
+    type="primary",  icon="📊", icon_position="left", width="stretch"
     )
 with col3:
     st.link_button("Healthcare Symptoms Analytics Dashboard", 
     "https://blank-app-ssh25yo5mc.streamlit.app/Healthcare_Symptoms_Analytics_Dashboard", 
-    type=primary,  icon="🏥", icon_position="left", width="stretch"
+    type="primary",  icon="🏥", icon_position="left", width="stretch"
     )
 st.markdown("---")
 col4, col5, col6 = st.columns(3)
 with col4:
     st.link_button("Madrid Weather Dashboard", 
     "https://blank-app-ssh25yo5mc.streamlit.app/Madrid_Daily_Weather_Analysis_Dashboard", 
-    type=primary,  icon="🌤️", icon_position="left", width="stretch"
+    type="primary",  icon="🌤️", icon_position="left", width="stretch"
     )
 with col5:
     st.link_button("Netflix Stock Analysis Dashboard", 
     "https://blank-app-ssh25yo5mc.streamlit.app/Netflix_Stock_Analysis_Dashboard", 
-    type=primary,  icon="💹", icon_position="left", width="stretch"
+    type="primary",  icon="💹", icon_position="left", width="stretch"
     )
 with col6:
     st.link_button("Retail Inventory Analysis Dashboard", 
     "https://blank-app-ssh25yo5mc.streamlit.app/Retail_Inventory_Analysis_Dashboard", 
-    type=primary,  icon="📦", icon_position="left", width="stretch"
+    type="primary",  icon="📦", icon_position="left", width="stretch"
     )
-    
+
 # Load custom CSS
 try:
     with open('style.css') as f:
