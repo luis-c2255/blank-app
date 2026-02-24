@@ -1037,3 +1037,73 @@ st.success("3. Promotions are highly effective (avg lift: -0.1%). Increase promo
 st.warning("4. Only 50.0% of products priced below competitors. Review pricing strategy to improve competitiveness.", icon="💰")
 st.info("5. Current forecast accuracy is 85.4%. Implement ML model to improve to 33.8%.", icon="🎯")
 st.success("6. Winter is your strongest season. Plan inventory buildup 4-6 weeks in advance.", icon="🌟")
+
+st.markdown("---") 
+st.markdown(
+    Components.section_header("What-If Scenario Simulator", "🧪"),
+    unsafe_allow_html=True
+)
+col1, col2, col3 = st.columns(3) 
+
+with col6:  
+sim_discount = st.slider("Discount %", 0, 30, 10)  
+with col7:  
+sim_price_change = st.slider("Price Change %", -20, 20, 0)  
+with col8:  
+sim_promotion = st.selectbox("Promotion Active?", ["No", "Yes"]) 
+
+# Simple scenario calculation  
+base_sales = filtered_df['Units Sold'].mean()  
+  
+# Estimate impact (simplified model)  
+discount_impact = (sim_discount / 10) * 5 # ~5% sales increase per 10% discount  
+price_impact = -sim_price_change * 0.3 # Price elasticity approximation  
+promo_impact = 15 if sim_promotion == "Yes" else 0 # Avg 15% lift from promotions  
+  
+projected_sales = base_sales * (1 + (discount_impact + price_impact + promo_impact) / 100)  
+projected_revenue = projected_sales * filtered_df['Price'].mean() * (1 + sim_price_change/100) * (1 - sim_discount/100)  
+  
+st.markdown("### Projected Impact:")  
+col9, col10, col11 = st.columns(3) 
+
+with col1:
+    sales_change = ((projected_sales - base_sales) /base_sales) * 100
+    st.markdown(
+        Components.metric_card(
+            title="Projected Sales",
+            value=f"{projected_sales:.0f} units",
+            delta=f"{sales_change:+.1f}%",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col2:
+    base_revenue = base_sales * filtered_df['Price'].mean()  
+    revenue_change = ((projected_revenue - base_revenue) / base_revenue) * 100 
+    st.markdown(
+        Components.metric_card(
+            title="Projected Revenue",
+            value=f"${projected_revenue:.0f}",
+            delta=f"{revenue_change:+.1f}%",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col3:
+    margin_impact = sim_discount + sim_price_change
+    st.markdown(
+        Components.metric_card(
+            title="Margin Impact",
+            value=f"{margin_impact:+.1f}%",
+            delta="Lower" if margin_impact < 0 else "Higher"
+            card_type=
+        ), unsafe_allow_html=True
+    )
+
+st.markdown("---") 
+st.markdown(
+    Components.page_header("🎯 KEY FINDINGS RECAP"),
+    unsafe_allow_html=True
+)
+
+st.markdown("""
+:red[### 1. REVENUE & SALES]""")
+col1, col2, col3, col4 = st.columns() 
