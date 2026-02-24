@@ -809,7 +809,8 @@ with st.container():
     fig_price = px.bar(pricing_perf, x='Price_Position', y='Units Sold',  
     title='Sales Performance vs Competitor Pricing',  
     text='Units Sold', color='Units Sold')  
-    fig_price.update_traces(texttemplate='%{text:.1f}', textposition='outside')  
+    fig_price.update_traces(texttemplate='%{text:.1f}', textposition='outside')
+    fig_price.update_layout(height=500)  
     st.plotly_chart(fig_price, width="stretch")  
 
 with st.container():
