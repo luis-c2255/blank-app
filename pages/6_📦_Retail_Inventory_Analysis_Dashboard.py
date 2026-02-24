@@ -1032,5 +1032,5 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.error(
-    st.markdown("1. **High stockout risk detected in Groceries**. Increase safety stock by 15-20% and review reorder points."), "🚨"
+    st.markdown("1. **High stockout risk detected in Groceries**. Increase safety stock by 15-20% and review reorder points.", "🚨")
 )
