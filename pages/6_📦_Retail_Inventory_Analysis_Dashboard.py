@@ -40,7 +40,7 @@ df = load_data()
 # Title
 st.markdown(
     Components.page_header(
-        "📦 Retail Inventory Analysis Dashboard"
+        "📦  Retail Inventory Analysis Dashboard"
     ), unsafe_allow_html=True
 )
 st.markdown("""
