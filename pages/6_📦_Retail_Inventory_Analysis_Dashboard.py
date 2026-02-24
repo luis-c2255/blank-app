@@ -460,6 +460,26 @@ st.markdown(
     Components.section_header("Critical Inventory Items", "📋"),
     unsafe_allow_html=True
 )
+
+with st.container():
+    inventory_summary = filtered_df.groupby(['Category', 'Region']).agg({  
+    'Stockout_Risk': 'sum',  
+    'Overstock_Risk': 'sum',  
+    'Stock_to_Sales_Ratio': 'mean'  
+    }).reset_index()  
+
+    fig_sum = px.scatter(inventory_summary,  
+    x='Stockout_Risk',  
+    y='Overstock_Risk',  
+    size='Stock_to_Sales_Ratio',  
+    color='Category',  
+    hover_data=['Region'],  
+    title='Inventory Risk Matrix',  
+    labels={'Stockout_Risk': 'Stockout Occurrences',  
+    'Overstock_Risk': 'Overstock Occurrences'})  
+    fig_sum = apply_chart_theme(fig_sum)
+    st.plotly_chart(fig_sum, width="stretch")  
+
 col1, col2 = st.columns(2)
 with col1:
     st.markdown("### 🚨 High Stockout Risk")
@@ -672,3 +692,138 @@ with st.container():
     ))  
     fig_seas.update_layout(barmode='group', height=400, title="Seasonal Performance")  
     st.plotly_chart(fig_seas, width="stretch") 
+
+with st.container():
+    dow_data = filtered_df.groupby('DayOfWeek').agg({  
+    'Units Sold': 'mean',  
+    'Revenue': 'mean'  
+    }).reset_index()  
+  
+    dow_labels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']  
+    dow_data['Day'] = dow_data['DayOfWeek'].map(dict(enumerate(dow_labels))) 
+
+    fig_day = px.line_polar(
+        dow_data,
+        r='Units Sold',
+        theta='Day',
+        line_close=True,
+        color_discrete_sequence=['#1f77b4']
+    )
+    fig_day.update_traces(fill='toself')
+    fig_day.update_layout(height=400, title="Day of the Week Analysis")
+    st.plotly_chart(fig_day, width="stretch")
+
+with st.container():
+    top_n = st.slider("Select number of products to display", 5, 20, 10)  
+  
+    top_products = filtered_df.groupby('Product ID').agg({  
+    'Units Sold': 'sum',  
+    'Revenue': 'sum',  
+    'Category': 'first'  
+    }).reset_index().sort_values('Revenue', ascending=False).head(top_n)
+
+    fig_prod = px.bar(
+        top_products,
+        x='Product ID',
+        y='Revenue',
+        color='Category',
+        hover_data=['Units Sold'],
+        labels={'Revenue': 'Total Revenue ($)'}
+    )
+    fig_prod.update_layout(height=400, title="Top Performing Products")
+    st.plotly_chart(fig_prod, width="stretch")
+
+st.markdown("---") 
+st.markdown(
+    Components.page_header("💰 Pricing Strategy"),
+    unsafe_allow_html=True
+)
+
+col1, col2, col3, col4 = st.columns(4)  
+  
+avg_discount = filtered_df['Discount'].mean()  
+avg_price = filtered_df['Price'].mean()  
+price_premium = (filtered_df['Price'] - filtered_df['Competitor Pricing']).mean()  
+discount_revenue = filtered_df[filtered_df['Discount'] > 0]['Revenue'].sum()
+
+with col1:
+    st.markdown(
+        Components.metric_card(
+            title="Avg Discount",
+            value=f"{avg_discount:.1f}%",
+            delta="🏷️",
+            card_type="success"
+        ), unsafe_allow_html=True
+    )
+with col2:
+    st.markdown(
+        Components.metric_card(
+            title="Avg Price",
+            value=f"${avg_price:.2f}",
+            delta="💵",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col3:
+    st.markdown(
+        Components.metric_card(
+            title="Price vs Competitor",
+            value=f"${price_premium:.2f}",
+            delta="📊",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col4:
+    st.markdown(
+        Components.metric_card(
+            title="Discount Revenue",
+            value=f"${discount_revenue:,.0f}",
+            delta="💰",
+            card_type="success"
+        ), unsafe_allow_html=True
+    )
+
+with st.container():
+    discount_bins = [0, 5, 10, 15, 20, 30]
+    filtered_df['Discount_Range'] = pd.cut(filtered_df['Discount'], bins=discount_bins)
+    discount_analysis = filtered_df.groupby('Discount_Range').agg({
+        'Units Sold':'mean',
+        'Revenue': 'mean'
+    }).reset_index()
+    discount_analysis = discount_analysis.dropna()
+
+    fig_disc = px.line(discount_analysis, x='Discount_Range', y=['Units Sold', 'Revenue'],  
+    title='Discount Range Impact on Sales & Revenue',  
+    markers=True,  
+    labels={'value': 'Average Value', 'variable': 'Metric'})  
+    st.plotly_chart(fig_disc, width="stretch") 
+
+with st.container():
+    filtered_df['Price_Position'] = np.where(  
+    filtered_df['Price'] < filtered_df['Competitor Pricing'], 'Below Competitor',  
+    np.where(filtered_df['Price'] > filtered_df['Competitor Pricing'], 'Above Competitor', 'Equal')  
+    )
+    pricing_perf = filtered_df.groupby('Price_Position').agg({  
+        'Units Sold': 'mean',  
+        'Revenue': 'mean'  
+    }).reset_index()
+    fig_price = px.bar(pricing_perf, x='Price_Position', y='Units Sold',  
+    title='Sales Performance vs Competitor Pricing',  
+    text='Units Sold', color='Units Sold')  
+    fig_price.update_traces(texttemplate='%{text:.1f}', textposition='outside')  
+    st.plotly_chart(fig_price, width="stretch")  
+
+with st.container():
+    price_corr = filtered_df.groupby('Category').apply(  
+    lambda x: x[['Price', 'Units Sold']].corr().iloc[0, 1]  
+    ).reset_index()  
+    price_corr.columns = ['Category', 'Price_Elasticity']
+
+    fig_corr = px.bar(price_corr, x='Category', y='Price_Elasticity',  
+    title='Price Elasticity by Category (Correlation)',  
+    text='Price_Elasticity',  
+    color='Price_Elasticity',  
+    color_continuous_scale='RdYlGn')  
+    fig_corr.update_traces(texttemplate='%{text:.3f}', textposition='outside')  
+    fig_corr.add_hline(y=0, line_dash="dash", line_color="gray")  
+    st.plotly_chart(fig_corr, width="stretch")  
