@@ -1064,7 +1064,7 @@ projected_sales = base_sales * (1 + (discount_impact + price_impact + promo_impa
 projected_revenue = projected_sales * filtered_df['Price'].mean() * (1 + sim_price_change/100) * (1 - sim_discount/100)  
   
 st.markdown("### Projected Impact:")  
-col9, col10, col11 = st.columns(3) 
+col1, col2, col3 = st.columns(3) 
 
 with col1:
     sales_change = ((projected_sales - base_sales) /base_sales) * 100
