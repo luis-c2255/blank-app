@@ -246,11 +246,13 @@ st.markdown("---")
 # Correlation heatmap
 st.subheader("Feature Correlations")  
 df_corr = df_filtered.select_dtypes(include=[np.number]).corr()
-fig8, ax = plt.subplots(figsize=(10, 8))
-sns.set_style("dark")
-sns.heatmap(df_corr, annot=True, cmap='coolwarm', center=0, ax=ax, fmt='.2f')
-plt.title('Feature Correlation Matrix')
-st.pyplot(fig8)
+fig8, px.imshow(
+    df_corr,
+    text_auto=True,
+    aspect="auto",
+    title="Feature Correlation Matrix",
+    color_continuous_scale="Inferno")
+st.plotly_chart(fig8, width="stretch")
 
 st.markdown(
         Components.page_header("🤖 Churn Prediction Model"), unsafe_allow_html=True
