@@ -447,7 +447,7 @@ def perform_clustering(data, n_clusters=4):
 
     kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
     clusters = kmeans.fit_transform(X_scaled)
-    return clusters, X_pca, cluster_features
+return clusters, X_pca, cluster_features
 
 n_clusters = st.slider("Select Number of Clusters", 2, 8, 4)
 clusters, X_pca, cluster_features = perform_clustering(df_filtered, n_clusters)
