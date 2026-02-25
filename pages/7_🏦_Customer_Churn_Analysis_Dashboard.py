@@ -206,6 +206,7 @@ with st.container():
         color_discrete_map={0: 'blue', 1: 'red'},
         opacity=0.6,
         hover_data=['CreditScore', 'Tenure'])
+    fig5.update_layout(height=500)
     st.plotly_chart(fig5, width='stretch')
 
 st.markdown("---")
