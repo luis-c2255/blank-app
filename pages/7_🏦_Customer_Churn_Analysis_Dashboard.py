@@ -246,7 +246,7 @@ st.markdown("---")
 # Correlation heatmap
 st.subheader("Feature Correlations")  
 df_corr = df_filtered.select_dtypes(include=[np.number]).corr()
-fig8, px.imshow(
+fig8 = px.imshow(
     df_corr,
     text_auto=True,
     aspect="auto",
