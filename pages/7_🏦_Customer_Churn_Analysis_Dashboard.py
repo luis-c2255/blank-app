@@ -376,8 +376,9 @@ if st.button ("🎯 Predict Churn Probability"):
 
 
     # Make prediction
-    churn_prob = model.predict_proba(input_data)[0][1]
+    churn_prob = float(model.predict_proba(input_data)[0][1])
     churn_prediction = "HIGH RISK ⚠️" if churn_prob > 0.5 else "LOW RISK ✅"
+
     # Save results in session state
     st.session_state.churn_prob = churn_prob
     st.session_state.churn_prediction = churn_prediction
@@ -406,26 +407,27 @@ with result_col2:
     )
 
 # Gauge chart
-fig_gauge = go.Figure(go.Indicator(
-    mode='gauge+number',
-    value=churn_prob * 100,
-    title={'text': "Churn Risk Score"},
-    gauge={
-        'axis': {'range': [0, 100]},
-        'bar': {'color': 'darkred' if churn_prob > 0.5 else 'green'},
-        'steps': [
-            {'range': [0, 30], 'color': 'lightgreen'},
-            {'range': [30, 70], 'color': 'yellow'},
-            {'range': [70, 100], 'color': 'lightcoral'}
-        ],
-        'threshold': {
+if st.session_state.churn_prob is not None:
+    fig_gauge = go.Figure(go.Indicator(
+        mode='gauge+number',
+        value=st.session_state.churn_prob * 100,
+        title={'text': "Churn Risk Score"},
+        gauge={
+            'axis': {'range': [0, 100]},
+            'bar': {'color': 'darkred' if st.session_state.churn_prob > 0.5 else 'green'},
+            'steps': [
+                {'range': [0, 30], 'color': 'lightgreen'},
+                {'range': [30, 70], 'color': 'yellow'},
+                {'range': [70, 100], 'color': 'lightcoral'}
+            ],
+            'threshold': {
             'line': {'color': 'red', 'width': 4},
             'thickness': 0.75,
             'value': 50
+            }
         }
-    }
-))
-st.plotly_chart(fig_gauge, width="stretch")
+    ))
+    st.plotly_chart(fig_gauge, width="stretch")
 
 st.markdown(
         Components.page_header("👥 Customer Segmentation"), unsafe_allow_html=True
