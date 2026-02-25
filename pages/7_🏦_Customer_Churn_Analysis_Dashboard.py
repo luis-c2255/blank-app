@@ -37,6 +37,7 @@ def load_data():
     df = pd.read_csv('Churn_Modelling.csv')
     return df
 
+df = load_data()
 # Sidebar filters
 st.sidebar.header("🔍 Filters")
 selected_geography = st.sidebar.multiselect(
