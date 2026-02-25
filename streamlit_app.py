@@ -95,6 +95,13 @@ with col6:
     "https://blank-app-ssh25yo5mc.streamlit.app/Retail_Inventory_Analysis_Dashboard", 
     icon="📦", icon_position="left", width="stretch"
     )
+st.markdown("---")
+col7 = st.columns(1)
+with col7:
+    st.link_button("Customer Churn Analysis Dashboard", 
+    "https://blank-app-ssh25yo5mc.streamlit.app/Customer_Churn_Analysis_Dashboard", 
+    icon="🏦", icon_position="left", width="stretch"
+    )
 
 # Load custom CSS
 try:
