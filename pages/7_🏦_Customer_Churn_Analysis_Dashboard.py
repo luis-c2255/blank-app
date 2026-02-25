@@ -710,7 +710,7 @@ st.markdown("---")
   
 st.subheader("🚀 Implementation Roadmap")  
 
-col1, col2, col3, col4 = st.columns(4)
+col1, col2 = st.columns(2)
 
 with col1:
     st.markdown(
@@ -746,6 +746,9 @@ with col2:
         ),
         unsafe_allow_html=True
     )
+    
+st.markdown("---")  
+col3, col4 = st.columns(2)
 with col3:
     st.markdown(
         Components.insight_box(
