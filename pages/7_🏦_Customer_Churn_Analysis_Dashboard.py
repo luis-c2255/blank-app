@@ -488,7 +488,8 @@ with st.container():
         'CreditScore': 'mean',
         'Tenure': 'mean',
         'EstimatedSalary': 'mean',
-        'Exited': ['mean', 'count']
+        'Exited': 'mean',
+        'Exited': 'sum'
     }).round(2)
 
 cluster_summary.columns = ['Avg Age', 'Avg Balance', 'Avg Credit', 'Avg Products', 'Avg Tenure', 'Avg Salary', 'Churn Rate', 'Customer Count']
