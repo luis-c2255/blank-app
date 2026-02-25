@@ -524,3 +524,47 @@ with col2:
         title='Customer Distribution Across Segments',
         color_discrete_sequence=px.colors.qualitative.Set3)
     st.plotly_chart(fig13, width="stretch")
+
+# Detailed cluster characteristics
+st.subheader("Detailed Segment Characteristics")
+selected_cluster = st.selectbox("Select Cluster to Analyze", sorted(df_filtered['Cluster'].unique()))
+
+cluster_data = df_filtered[df_filtered['Cluster'] == selected_cluster]
+
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    st.markdown(
+        Components.metric_card(
+            title="Cluster Size",
+            value=f"{len(cluster_data):,}",
+            delta="1️⃣",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col2:
+    st.markdown(
+        Components.metric_card(
+            title="Churn Rate",
+            value=f"{cluster_data['Exited'].mean()*100:.2f}%",
+            delta="2️⃣",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col3:
+    st.markdown(
+        Components.metric_card(
+            title="Avg Age",
+            value=f"{cluster_data['Age'].mean():.1f}",
+            delta="3️⃣",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col4:
+    st.markdown(
+        Components.metric_card(
+            title="Avg Balance",
+            value=f"${cluster_data['Balance'].mean():,.0f}",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
