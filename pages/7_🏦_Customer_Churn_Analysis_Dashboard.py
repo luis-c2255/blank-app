@@ -193,7 +193,7 @@ with st.container():
             text='count',
             color='mean',
             color_continuous_scale='OrRd')
-    fig4.update_traces(texttemplate='%{text} customers', textposition='outside')
+    fig4.update_traces(texttemplate='%{text} customers', textposition='inside')
     st.plotly_chart(fig4, width="stretch")
         
 # Tab 2: Deep Dive
