@@ -35,7 +35,6 @@ st.markdown("""
 @st.cache_data
 def load_data():
     df = pd.read_csv('Churn_Modelling.csv')
-
     return df
 
 # Sidebar filters
