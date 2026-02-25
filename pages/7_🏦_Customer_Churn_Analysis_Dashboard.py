@@ -405,7 +405,7 @@ with result_col2:
             card_type=( "warning" if st.session_state.churn_prediction == "HIGH RISK ⚠️" else "success" if st.session_state.churn_prediction == "LOW RISK ✅" else "info")
         ), unsafe_allow_html=True
     )
-
+st.markdown("---")  
 # Gauge chart
 if st.session_state.churn_prob is not None:
     fig_gauge = go.Figure(go.Indicator(
@@ -466,7 +466,6 @@ df_pca = pd.DataFrame({
     'Cluster': clusters,
     'Exited': df_filtered['Exited'].values
 })
-
 with st.container():
     fig11 = px.scatter(
         df_pca,
@@ -478,7 +477,7 @@ with st.container():
         labels={'Exited': 'Churned'},
         color_continuous_scale='Viridis')
     st.plotly_chart(fig11, width="stretch")
-
+st.markdown("---")  
 with st.container():
     # Cluster profiles
     st.subheader("Cluster Profiles")
@@ -494,7 +493,7 @@ with st.container():
 
 cluster_summary.columns = ['Avg Age', 'Avg Balance', 'Avg Credit', 'Avg Products', 'Avg Tenure', 'Avg Salary', 'Churn Rate', 'Customer Count']
 cluster_summary['Churn Rate'] = (cluster_summary['Churn Rate'] * 100).round(2)
-
+st.markdown("---")  
 with st.container():
     st.dataframe(cluster_summary, width="stretch")
 
@@ -524,7 +523,7 @@ with col2:
         title='Customer Distribution Across Segments',
         color_discrete_sequence=px.colors.qualitative.Set3)
     st.plotly_chart(fig13, width="stretch")
-
+st.markdown("---")  
 # Detailed cluster characteristics
 st.subheader("Detailed Segment Characteristics")
 selected_cluster = st.selectbox("Select Cluster to Analyze", sorted(df_filtered['Cluster'].unique()))
@@ -564,7 +563,224 @@ with col4:
         Components.metric_card(
             title="Avg Balance",
             value=f"${cluster_data['Balance'].mean():,.0f}",
-            delta="",
+            delta="💲",
             card_type="info"
         ), unsafe_allow_html=True
     )
+st.markdown("---")  
+# Cluster characteristics radar chart  
+cluster_means = df_filtered.groupby('Cluster')[cluster_features].mean()  
+selected_cluster_data = cluster_means.loc[selected_cluster]  
+  
+# Normalize for radar chart  
+cluster_normalized = (selected_cluster_data - cluster_means.min()) / (cluster_means.max() - cluster_means.min())  
+
+with st.container():
+    fig14 = go.Figure()
+    fig14.add_trace(go.Scatterpolar(
+        r=cluster_normalized.values,
+        theta=cluster_features,
+        fill='toself',
+        name=f"Cluster {selected_cluster}"
+    ))
+    fig14.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 1])), title=f'Cluster {selected_cluster} Profile (Normalized)')
+    st.plotly_chart(fig14, width="stretch")
+
+st.markdown(
+        Components.page_header("💡 Key Insights & Recommendations"), unsafe_allow_html=True
+    )
+
+# Calculate key insights
+overall_churn = df_filtered['Exited'].mean() * 100
+
+geo_churn = df_filtered.groupby('Geography')['Exited'].mean().sort_values(ascending=False)
+highest_churn_geo = geo_churn.index[0]
+highest_churn_geo_rate = geo_churn.values[0] * 100
+
+age_high_risk = df_filtered[df_filtered['Exited'] == 1]['Age'].mean()
+age_low_risk = df_filtered[df_filtered['Exited'] == 0]['Age'].mean()
+
+products_churn = df_filtered.groupby('NumOfProducts')['Exited'].mean()
+highest_risk_products = products_churn.idxmax()  
+highest_risk_products_rate = products_churn.max() * 100
+
+active_churn = df_filtered[df_filtered['IsActiveMember'] == 0]['Exited'].mean() * 100  
+inactive_churn = df_filtered[df_filtered['IsActiveMember'] == 1]['Exited'].mean() * 100 
+
+# Display insights  
+st.subheader("📊 Summary Statistics")
+
+col1, col2 = st.columns(2)
+with col1:
+    st.info(
+        st.markdown(f"""
+        ### Churn Overview
+        - **Overall Churn Rate:** {overall_churn:.2f}%
+        - **Total Customers Analyzed:** {len(df_filtered):,}
+        - **Churned Customers:** {df_filtered['Exited'].sum();,}
+        - **Retained Customers:** {len(df_filtered) - df_filtered['Exited'].sum():,}
+        """)
+    )
+with col2:
+    st.warning(
+        st.markdown(f"""
+        ### High-Risk Indicators
+        - **Highest Risk Geography:** {highest_churn_geo}({highest_churn_geo_rate:.2f}%)
+        - **Avg Age of Churners:** {age_high_risk:.1f} years
+        - **Highest Risk Product Count:** {highest_risk_products} products ({highest_risk_products_rate:.2f}%)
+        - **Inactive Member Churn:** {active_churn:.2f}%
+        """)
+    )
+st.markdown("---")  
+
+st.subheader("🎯 Strategic Recommendations")  
+
+recommendations = [  
+{  
+"title": "1. Geographic Focus",  
+"insight": f"Customers in {highest_churn_geo} have a {highest_churn_geo_rate:.2f}% churn rate, significantly higher than other regions.",  
+"action": f"• Launch retention campaigns specifically in {highest_churn_geo}\n• Investigate local market conditions and competitor activity\n• Offer region-specific promotions and loyalty programs",  
+"priority": "🔴 High"  
+},  
+{  
+"title": "2. Product Optimization",  
+"insight": f"Customers with {highest_risk_products} products show {highest_risk_products_rate:.2f}% churn rate.",  
+"action": "• Review product bundling strategies\n• Simplify product offerings to reduce confusion\n• Provide personalized product recommendations based on customer needs",  
+"priority": "🟡 Medium"  
+},  
+{  
+"title": "3. Customer Engagement",  
+"insight": f"Inactive members have {active_churn:.2f}% churn vs {inactive_churn:.2f}% for active members.",  
+"action": "• Implement re-engagement campaigns for inactive customers\n• Develop gamification features to increase platform usage\n• Send personalized notifications about relevant services",  
+"priority": "🔴 High"  
+},  
+{  
+"title": "4. Age-Based Targeting",  
+"insight": f"Average age of churners is {age_high_risk:.1f} years, suggesting age-specific patterns.",  
+"action": "• Create age-appropriate product offerings and communication styles\n• Develop educational content for different age demographics\n• Offer personalized financial planning services",  
+"priority": "🟡 Medium"  
+},  
+{  
+"title": "5. Proactive Intervention",  
+"insight": f"Predictive model achieves {auc_score:.2f} AUC score for identifying at-risk customers.",  
+"action": "• Deploy ML model to score all customers monthly\n• Create automated alerts for high-risk customers\n• Assign dedicated relationship managers to high-value at-risk accounts",  
+"priority": "🔴 High"  
+}  
+]  
+
+for rec in recommendations:
+    with st.expander(f"{rec['priority']} - {rec['title']}"):
+        st.markdown(f"**Insight:** {rec['insight']}")
+        st.markdown(f"**Recommended Actions:**\n{rec['action']}")
+
+st.markdown("---")  
+st.subheader("📈 ROI Estimation") 
+
+# Calculate potential savings  
+avg_customer_value = df_filtered['Balance'].mean()  
+total_churned = df_filtered['Exited'].sum()  
+
+roi_col1, roi_col2, roi_col3 = st.columns(3)
+with roi_col1:  
+    reduction_rate = st.slider("Expected Churn Reduction (%)", 5, 50, 20)  
+  
+with roi_col2:  
+    customers_saved = int(total_churned * (reduction_rate / 100))  
+    st.metric("Customers Saved", f"{customers_saved:,}")  
+  
+with roi_col3:  
+    revenue_saved = customers_saved * avg_customer_value  
+    st.metric("Potential Revenue Saved", f"${revenue_saved:,.0f}")  
+
+st.markdown("---")  
+  
+st.subheader("🚀 Implementation Roadmap")  
+  
+roadmap_data = {  
+"Phase": ["Phase 1 (Immediate)", "Phase 2 (1-3 months)", "Phase 3 (3-6 months)", "Phase 4 (Ongoing)"],  
+"Actions": [  
+"• Deploy churn prediction model\n• Identify top 10% at-risk customers\n• Launch emergency retention offers",  
+"• Implement geographic-specific campaigns\n• Re-engage inactive members\n• Optimize product bundles",  
+"• Roll out personalized communication\n• Launch age-targeted programs\n• Develop loyalty rewards system",  
+"• Monitor KPIs monthly\n• Refine ML models\n• A/B testretention strategies\n• Continuous customer feedback loops"  
+],  
+"Expected Impact": ["5-10% churn reduction", "10-15% churn reduction", "15-25% churn reduction", "Sustained improvement"]  
+}  
+
+roadmap_df = pd.DataFrame(roadmap_data)  
+st.table(roadmap_df)  
+  
+st.markdown("---")  
+  
+st.subheader("📋 Action Items Checklist")  
+
+col1, col2 = st.columns(2)  
+  
+with col1:  
+    st.markdown("**Immediate Actions (Week 1-2)**")  
+    st.checkbox("✓ Set up automated churn scoring system")  
+    st.checkbox("✓ Create high-risk customer list")  
+    st.checkbox("✓ Design retention offer templates")  
+    st.checkbox("✓ Train customer service team on retention")  
+    st.checkbox("✓ Set up monitoring dashboard")  
+
+with col2:  
+    st.markdown("**Short-term Actions (Month 1-3)**")  
+    st.checkbox("✓ Launch geographic campaigns")  
+    st.checkbox("✓ Implement re-engagement emails")  
+    st.checkbox("✓ Review and optimize product portfolio")  
+    st.checkbox("✓ Conduct customer satisfaction surveys")  
+    st.checkbox("✓ Analyze campaign effectiveness")  
+  
+st.markdown("---")  
+  
+st.subheader("📊 Download Reports")  
+  
+download_col1, download_col2, download_col3 = st.columns(3)  
+  
+with download_col1:  
+    # High-risk customers export  
+    high_risk_customers = df_filtered[  
+    (df_filtered['Exited'] == 0) &  
+    (df_filtered['IsActiveMember'] == 0)  
+    ][['CustomerId', 'Geography', 'Age', 'Balance', 'NumOfProducts']]  
+  
+    csv_high_risk = high_risk_customers.to_csv(index=False)  
+    st.download_button(  
+    label="📥 Download High-Risk Customers",  
+    data=csv_high_risk,  
+    file_name="high_risk_customers.csv",  
+    mime="text/csv"  
+    )  
+  
+with download_col2:  
+    # Cluster summary export  
+    csv_clusters = cluster_summary.to_csv()  
+    st.download_button(  
+    label="📥 Download Cluster Analysis",  
+    data=csv_clusters,  
+    file_name="cluster_analysis.csv",  
+    mime="text/csv"  
+    )  
+  
+with download_col3:  
+    # Feature importance export  
+    csv_features = feature_importance.to_csv(index=False)  
+    st.download_button(  
+    label="📥 Download Feature Importance",  
+    data=csv_features,  
+    file_name="feature_importance.csv",  
+    mime="text/csv"  
+    )  
+
+# ============================================
+# FOOTER
+# ============================================
+st.markdown("---")
+st.markdown("""
+<div style='text-align: center; color: #666;'>
+    <p><strong>🏦 Customer Churn Analytics Dashboard</strong></p>
+    <p>Built with Streamlit & Python</p>
+    <p style='font-size: 0.9rem;'>Last Updated: February 2025 | Model Version: 1.0</p>
+</div>
+""", unsafe_allow_html=True)
