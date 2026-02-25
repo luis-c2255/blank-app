@@ -135,7 +135,7 @@ with st.container():
     # Churn by Geography
     churn_geo = df_filtered.groupby('Geography')['Exited'].agg([
         'mean', 'count']).reset_index()
-        churn_geo['mean'] = churn_geo['mean'] * 100
+    churn_geo['mean'] = churn_geo['mean'] * 100
         fig1 = px.bar(
             churn_geo,
             x='Geography',
