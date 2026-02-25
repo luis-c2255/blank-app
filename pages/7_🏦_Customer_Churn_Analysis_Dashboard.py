@@ -116,6 +116,7 @@ with col4:
         ), unsafe_allow_html=True
     )
 
+st.markdown("---")
 # Tab navigation
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📊 Overview",
