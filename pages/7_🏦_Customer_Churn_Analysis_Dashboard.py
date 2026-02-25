@@ -163,7 +163,7 @@ with st.container():
             text='count',
             color='mean',
             color_continuous_scale='Blues')
-    fig2.update_traces(texttemplate='%{text} customers', textposition='outside')
+    fig2.update_traces(texttemplate='%{text} customers', textposition='inside')
     st.plotly_chart(fig2, width="stretch")
 st.markdown("---")
 with st.container():
