@@ -610,9 +610,8 @@ inactive_churn = df_filtered[df_filtered['IsActiveMember'] == 1]['Exited'].mean(
 # Display insights  
 st.subheader("📊 Summary Statistics")
 
-col1, col2 = st.columns(2)
+col1, col2 = st.columns(2, border=True)
 with col1:
-    st.info(
         st.markdown(f"""
         ### Churn Overview
         - **Overall Churn Rate:** {overall_churn:.2f}%
@@ -620,9 +619,7 @@ with col1:
         - **Churned Customers:** {df_filtered['Exited'].sum():,}
         - **Retained Customers:** {len(df_filtered) - df_filtered['Exited'].sum():,}
         """)
-    )
 with col2:
-    st.warning(
         st.markdown(f"""
         ### High-Risk Indicators
         - **Highest Risk Geography:** {highest_churn_geo}({highest_churn_geo_rate:.2f}%)
@@ -630,7 +627,7 @@ with col2:
         - **Highest Risk Product Count:** {highest_risk_products} products ({highest_risk_products_rate:.2f}%)
         - **Inactive Member Churn:** {active_churn:.2f}%
         """)
-    )
+
 st.markdown("---")  
 
 st.subheader("🎯 Strategic Recommendations")  
