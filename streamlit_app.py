@@ -96,8 +96,18 @@ with col6:
     icon="📦", icon_position="left", width="stretch"
     )
 st.markdown("---")
-col7 = st.columns(1)
+col7, col8, col9 = st.columns(3)
 with col7:
+    st.link_button("Customer Churn Analysis Dashboard", 
+    "https://blank-app-ssh25yo5mc.streamlit.app/Customer_Churn_Analysis_Dashboard", 
+    icon="🏦", icon_position="left", width="stretch"
+    )
+with col8:
+    st.link_button("Customer Churn Analysis Dashboard", 
+    "https://blank-app-ssh25yo5mc.streamlit.app/Customer_Churn_Analysis_Dashboard", 
+    icon="🏦", icon_position="left", width="stretch"
+    )
+with col9:
     st.link_button("Customer Churn Analysis Dashboard", 
     "https://blank-app-ssh25yo5mc.streamlit.app/Customer_Churn_Analysis_Dashboard", 
     icon="🏦", icon_position="left", width="stretch"
