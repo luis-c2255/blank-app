@@ -136,7 +136,7 @@ with st.container():
     churn_geo = df_filtered.groupby('Geography')['Exited'].agg([
         'mean', 'count']).reset_index()
     churn_geo['mean'] = churn_geo['mean'] * 100
-        fig1 = px.bar(
+    fig1 = px.bar(
             churn_geo,
             x='Geography',
             y='mean',
@@ -146,15 +146,15 @@ with st.container():
             color='mean',
             color_continuous_scale='Reds')
 
-        fig1.update_traces(texttemplate='%{text} customers', textposition='outside')
-        st.plotly_chart(fig1, width="stretch")
+    fig1.update_traces(texttemplate='%{text} customers', textposition='outside')
+    st.plotly_chart(fig1, width="stretch")
 st.markdown("---")
 with st.container():
     # Churn by Gender
     churn_gender = df_filtered.groupby('Gender')['Exited'].agg([
         'mean', 'count']).reset_index()
-        churn_gender['mean'] = churn_gender['mean'] * 100
-        fig2 = px.bar(
+    churn_gender['mean'] = churn_gender['mean'] * 100
+    fig2 = px.bar(
             churn_gender,
             x='Gender',
             y='mean',
@@ -163,8 +163,8 @@ with st.container():
             text='count',
             color='mean',
             color_continuous_scale='Blues')
-        fig2.update_traces(texttemplate='%{text} customers', textposition='outside')
-        st.plotly_chart(fig2, width="stretch")
+    fig2.update_traces(texttemplate='%{text} customers', textposition='outside')
+    st.plotly_chart(fig2, width="stretch")
 st.markdown("---")
 with st.container():
     # Age distribution by churn
@@ -183,8 +183,8 @@ with st.container():
     # Number of products vs churn
     churn_products = df_filtered.groupby('NumOfProducts')['Exited'].agg([
         'mean', 'count']).reset_index()
-        churn_products['mean'] = churn_products['mean'] * 100
-        fig4 = px.bar(
+    churn_products['mean'] = churn_products['mean'] * 100
+    fig4 = px.bar(
             churn_products,
             x='NumOfProducts',
             y='mean',
@@ -193,8 +193,8 @@ with st.container():
             text='count',
             color='mean',
             color_continuous_scale='OrRd')
-        fig4.update_traces(texttemplate='%{text} customers', textposition='outside')
-        st.plotly_chart(fig4, width="stretch")
+    fig4.update_traces(texttemplate='%{text} customers', textposition='outside')
+    st.plotly_chart(fig4, width="stretch")
         
 # Tab 2: Deep Dive
 with tab2:
