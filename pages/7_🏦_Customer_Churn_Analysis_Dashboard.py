@@ -404,13 +404,6 @@ with result_col2:
             card_type=( "warning" if st.session_state.churn_prediction == "HIGH RISK ⚠️" else "success" if st.session_state.churn_prediction == "LOW RISK ✅" else "info")
         ), unsafe_allow_html=True
     )
-input_data = input_data.reindex(columns=feature_cols, fill_value=0)
-# Make prediction
-churn_prob = model.predict_proba(input_data)[0][1]
-churn_prediction = "HIGH RISK ⚠️" if churn_prob > 0.5 else "LOW RISK ✅"
-# Save results in session state
-st.session_state.churn_prob = churn_prob
-st.session_state.churn_prediction = churn_prediction
 
 # Gauge chart
 fig_gauge = go.Figure(go.Indicator(
