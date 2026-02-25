@@ -286,7 +286,7 @@ def train_model(data):
     }).sort_values('Importance', ascending=False)
 
     return model, auc_score, cm, feature_importance, X.columns
-    model, auc_score, cm, feature_importance, feature_cols = train_model(df)
+model, auc_score, cm, feature_importance, feature_cols = train_model(df)
 
 st.markdown("---")
 col1, col2 = st.columns(2)
