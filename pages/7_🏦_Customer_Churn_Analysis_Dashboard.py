@@ -146,7 +146,7 @@ with st.container():
             color_continuous_scale='Reds')
 
     fig1.update_traces(texttemplate='%{text} customers', textposition='outside')
-    fig1.update_layout(height=350)
+    fig1.update_layout(height=500)
     st.plotly_chart(fig1, width="stretch")
 st.markdown("---")
 with st.container():
