@@ -67,16 +67,12 @@ st.markdown("""
 
 st.markdown("---")
 
-st.markdown(
-    Components.section_header(
-        "Filters", "🔍"
-    ), unsafe_allow_html=True
-)
+st.sidebar.header("🔍 Filters")
 
 # Date range filter
 min_date = df['Date'].min()
 max_date = df['Date'].max()
-date_range = st.date_input(
+date_range = st.sidebar.date_input(
     "Select Date Range",
     value=(min_date, max_date),
     min_value=min_date,
@@ -84,28 +80,28 @@ date_range = st.date_input(
 )
 
 # Category filter
-categories = st.multiselect(
+categories = st.sidebar.multiselect(
     "Select Categories",
     options=df['Category'].unique(),
     default=df['Category'].unique()
 )
 
 # Region filter
-regions = st.multiselect(
+regions = st.sidebar.multiselect(
     "Select Regions",
     options=df['Region'].unique(),
     default=df['Region'].unique()
 )
 
 # Store filter
-stores = st.multiselect(
+stores = st.sidebar.multiselect(
     "Select Stores (Optional)",
     options=sorted(df['Store ID'].unique()),
     default = []
 )
 
 # Weather filter
-weather = st.multiselect(
+weather = st.sidebar.multiselect(
     "Weather Conditions",
     options=df['Weather Condition'].unique(),
     default=df['Weather Condition'].unique()
