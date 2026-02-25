@@ -404,3 +404,116 @@ with result_col2:
             card_type=( "warning" if st.session_state.churn_prediction == "HIGH RISK ⚠️" else "success" if st.session_state.churn_prediction == "LOW RISK ✅" else "info")
         ), unsafe_allow_html=True
     )
+
+# Gauge chart
+fig_gauge = go.Figure(go.Indicator(
+    mode='gauge+number',
+    value=churn_prob * 100,
+    title={'text': "Churn Risk Score"},
+    gauge={
+        'axis': {'range': [0, 100]},
+        'bar': {'color': 'darkred' if churn_prob > 0.5 else 'green'},
+        'steps': [
+            {'range': [0, 30], 'color': 'lightgreen'},
+            {'range': [30, 70], 'color': 'yellow'},
+            {'range': [70, 100], 'color': 'lightcoral'}
+        ],
+        'threshold': {
+            'line': {'color': 'red', 'width': 4},
+            'thickness': 0.75,
+            'value': 50
+        }
+    }
+))
+st.plotly_chart(fig_gauge, width="stretch")
+
+st.markdown(
+        Components.page_header("👥 Customer Segmentation"), unsafe_allow_html=True
+    )
+
+from sklearn.cluster import KMeans  
+from sklearn.preprocessing import StandardScaler  
+from sklearn.decomposition import PCA  
+
+@st.cache_data
+def perform_clustering(data, n_clusters=4):
+    cluster_features = ['Age', 'Balance', 'CreditScore', 'NumOfProducts', 'Tenure']
+    X_cluster = data[cluster_features].copy()
+
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X_cluster)
+
+    kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
+    clusters = kmeans.fit_transform(X_scaled)
+    return clusters, X_pca, cluster_features
+
+    n_clusters = st.slider("Select Number of Clusters", 2, 8, 4)
+    clusters, X_pca, cluster_features = perform_clustering(df_filtered, n_clusters)
+
+    df_filtered['Cluster'] = clusters
+
+# Cluster visualization with PCA
+st.subheader("Customer Segments Visualization")
+df_pca = pd.DataFrame({
+    'PC1': X_pca[:, 0],
+    'PC2': X_pca[:, 1],
+    'Cluster': clusters,
+    'Exited': df_filtered['Exited'].values
+})
+
+with st.container():
+    fig11 = px.scatter(
+        df_pca,
+        x='PC1',
+        y='PC2',
+        color='Cluster',
+        symbol='Exited',
+        title='Customer Segments (PCA Projection)',
+        labels={'Exited': 'Churned'},
+        color_continuous_scale='Viridis')
+    st.plotly_chart(fig11, width="stretch")
+
+with .stcontainer():
+    # Cluster profiles
+    st.subheader("Cluster Profiles")
+    cluster_summary = df_filtered.groupby('Cluster').agg({
+        'Age': 'mean',
+        'Balance': 'mean',
+        'CreditScore': 'mean',
+        'Tenure': 'mean',
+        'EstimatedSalary': 'mean',
+        'Exited': ['mean', 'count']
+    }).round(2)
+
+cluster_summary.columns = ['Avg Age', 'Avg Balance', 'Avg Credit', 'Avg Products', 'Avg Tenure', 'Avg Salary', 'Churn Rate', 'Customer Count']
+cluster_summary['Churn Rate'] = (cluster_summary['Churn Rate'] * 100).round(2)
+
+with st.container():
+    st.dataframe(cluster_summary, width="stretch")
+
+# Churn rate by cluster
+col1, col2 = st.columns(2)
+
+with col1:
+    cluster_churn = df_filtered.groupby('Cluster')['Exited'].mean().reset_index()
+    cluster_churn['Exited'] = cluster_churn['Exited'] * 100
+    fig12 = px.bar(
+        cluster_churn,
+        x='Cluster',
+        y='Exited',
+        title='Churn Rate by Customer Segment',
+        labels={'Exited': 'Churn Rate (%)'},
+        color='Exited',
+        color_continuous_scale='Reds')
+    st.plotly_chart(fig12, width="stretch")
+
+with col2:
+    cluster_size = df_filtered['Cluster'].value_counts().reset_index()
+    cluster_size.columns = ['Cluster', 'Count']
+    fig13 = px.pie(
+        cluster_size,
+        values='Count',
+        names='Cluster',
+        title='Customer Distribution Across Segments',
+        color_continuous_sequence=px.colors.qualitative.Set3)
+    st.plotly_chart(fig13, width="stretch")
