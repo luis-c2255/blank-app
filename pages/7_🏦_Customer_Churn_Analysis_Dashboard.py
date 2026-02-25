@@ -617,7 +617,7 @@ with col1:
         ### Churn Overview
         - **Overall Churn Rate:** {overall_churn:.2f}%
         - **Total Customers Analyzed:** {len(df_filtered):,}
-        - **Churned Customers:** {df_filtered['Exited'].sum();,}
+        - **Churned Customers:** {df_filtered['Exited'].sum():,}
         - **Retained Customers:** {len(df_filtered) - df_filtered['Exited'].sum():,}
         """)
     )
