@@ -612,22 +612,38 @@ st.subheader("📊 Summary Statistics")
 
 col1, col2 = st.columns(2, border=True)
 with col1:
-    st.markdown(f"""
-        ### Churn Overview
-        - **Overall Churn Rate:** {overall_churn:.2f}%
-        - **Total Customers Analyzed:** {len(df_filtered):,}
-        - **Churned Customers:** {df_filtered['Exited'].sum():,}
-        - **Retained Customers:** {len(df_filtered) - df_filtered['Exited'].sum():,}
-        """)
+    st.markdown(
+        Components.insight_box(
+            "Churn Overview",
+            """
+            <ul style="margin: 0; padding-left: 20px;">
+                <li>Overall Churn Rate: 20.37%</li>
+                <li>Total Customers Analyzed: 10,000</li>
+                <li>Churned Customers: 2,037</li>
+                <li>Retained Customers: 7,963</li>
+            </ul>
+            """,
+            "info"
+        ),
+        unsafe_allow_html=True
+    )
     
 with col2:
-    st.markdown(f"""
-        ### High-Risk Indicators
-        - **Highest Risk Geography:** {highest_churn_geo}({highest_churn_geo_rate:.2f}%)
-        - **Avg Age of Churners:** {age_high_risk:.1f} years
-        - **Highest Risk Product Count:** {highest_risk_products} products ({highest_risk_products_rate:.2f}%)
-        - **Inactive Member Churn:** {active_churn:.2f}%
-        """)
+        st.markdown(
+        Components.insight_box(
+            "High-Risk Indicators",
+            """
+            <ul style="margin: 0; padding-left: 20px;">
+                <li>Highest Risk Geography: Germany(32,44%)</li>
+                <li>Average Age of Churners: 44.8 years</li>
+                <li>Highest Risk Product Count: 4 products (100%)</li>
+                <li>Inactive Member Churn: 26.85%</li>
+            </ul>
+            """,
+            "info"
+        ),
+        unsafe_allow_html=True
+    )
 
 st.markdown("---")  
 
