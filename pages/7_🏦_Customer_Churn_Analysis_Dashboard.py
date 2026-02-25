@@ -219,6 +219,7 @@ with st.container():
         labels={'Exited': 'Churned'},
         color='Exited',
         color_discrete_map={0: 'green', 1: 'red'})
+    fig.update_layout(height=500)
     st.plotly_chart(fig6, width='stretch')
 
 st.markdown("---")
