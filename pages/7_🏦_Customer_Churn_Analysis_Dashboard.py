@@ -36,6 +36,6 @@ active_filter = st.sidebar.radio("Active Member Status", ['All', 'Active', 'Inac
 
 filtered_df = df.copy()
 if selected_geography != 'All':filtered_df = filtered_df[filtered_df['Geography'] == selected_geography]
-    filtered_df = filtered_df[(filtered_df['Age'] >= age_range[0]) & (filtered_df['Age'] <= age_range[1])]
-    if active_filter == 'Active': filtered_df = filtered_df[filtered_df['IsActiveMember'] == 1]
-    elif active_filter == 'Inactive': filtered_df = filtered_df[filtered_df['IsActiveMember'] == 0]
+filtered_df = filtered_df[(filtered_df['Age'] >= age_range[0]) & (filtered_df['Age'] <= age_range[1])]
+if active_filter == 'Active': filtered_df = filtered_df[filtered_df['IsActiveMember'] == 1]
+elif active_filter == 'Inactive': filtered_df = filtered_df[filtered_df['IsActiveMember'] == 0]
