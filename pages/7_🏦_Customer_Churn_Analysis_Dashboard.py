@@ -715,7 +715,7 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown(
         Components.insight_box(
-            "Phase 1 (Immediate)",
+            "🔴 Phase 1 (Immediate)",
             """
             <ul style="margin: 0; padding-left: 20px;">
                 <li>Deploy churn prediction model(32,44%)</li>
@@ -732,7 +732,7 @@ with col1:
 with col2:
     st.markdown(
         Components.insight_box(
-            "Phase 2 (1-3 months)",
+            "🟡 Phase 2 (1-3 months)",
             """
             <ul style="margin: 0; padding-left: 20px;">
                 <li>Implement geographic-specific campaigns</li>
@@ -746,13 +746,13 @@ with col2:
         ),
         unsafe_allow_html=True
     )
-    
+
 st.markdown("---")  
 col3, col4 = st.columns(2)
 with col3:
     st.markdown(
         Components.insight_box(
-            "Phase 3 (3-6 months)",
+            "🔵 Phase 3 (3-6 months)",
             """
             <ul style="margin: 0; padding-left: 20px;">
                 <li>Roll out personalized communication</li>
@@ -769,7 +769,7 @@ with col3:
 with col4:
     st.markdown(
         Components.insight_box(
-            "Phase 4 (Ongoing)",
+            "🟢 Phase 4 (Ongoing)",
             """
             <ul style="margin: 0; padding-left: 20px;">
                 <li>Monitor KPIs monthly</li>
