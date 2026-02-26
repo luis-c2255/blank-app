@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 
 from utils.theme import Components, Colors, apply_chart_theme, init_page
 
+
 init_page("Customer Churn Analytics Dashboard", "🏦")
 
 # Load custom CSS
@@ -36,6 +37,7 @@ st.markdown("""
 def load_data():
     df = pd.read_csv('Churn_Modelling.csv')
     return df
+
 
 df = load_data()
 # Sidebar filters
@@ -67,6 +69,8 @@ df_filtered = df[
     (df['Age'] <= age_range[1])
 ]
 
+
+
 st.subheader("📈 Key Performance Indicators")
 
 
@@ -90,7 +94,7 @@ with col2:
             title="Churn Rate",
             value=f"{churn_rate:.2f}%",
             delta="🚷",
-            card_type="info"
+            card_type="warning"
         ), unsafe_allow_html=True
     )
 with col3:
@@ -100,7 +104,7 @@ with col3:
             title="Avg Balance",
             value=f"${avg_balance:,.0f}",
             delta="💲",
-            card_type="info"
+            card_type="success"
         ), unsafe_allow_html=True
     )
 with col4:
@@ -110,7 +114,7 @@ with col4:
             title="Avg Tenure",
             value=f"{avg_tenure:.1f} years",
             delta="🚩",
-            card_type="info"
+            card_type="error"
         ), unsafe_allow_html=True
     )
 
@@ -546,7 +550,7 @@ with col2:
             title="Churn Rate",
             value=f"{cluster_data['Exited'].mean()*100:.2f}%",
             delta="2️⃣",
-            card_type="info"
+            card_type="warning"
         ), unsafe_allow_html=True
     )
 with col3:
@@ -555,7 +559,7 @@ with col3:
             title="Avg Age",
             value=f"{cluster_data['Age'].mean():.1f}",
             delta="3️⃣",
-            card_type="info"
+            card_type="success"
         ), unsafe_allow_html=True
     )
 with col4:
@@ -564,7 +568,7 @@ with col4:
             title="Avg Balance",
             value=f"${cluster_data['Balance'].mean():,.0f}",
             delta="💲",
-            card_type="info"
+            card_type="error"
         ), unsafe_allow_html=True
     )
 st.markdown("---")  
@@ -586,6 +590,8 @@ with st.container():
     fig14.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 1])), title=f'Cluster {selected_cluster} Profile (Normalized)')
     st.plotly_chart(fig14, width="stretch")
 
+
+st.markdown("---")  
 st.markdown(
         Components.page_header("💡 Key Insights & Recommendations"), unsafe_allow_html=True
     )
